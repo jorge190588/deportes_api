@@ -11,3 +11,13 @@
 1. [start.spring.io](https://start.spring.io/)
 2. [Crear el primer controlador](https://spring.io/guides/gs/spring-boot/)
 3. [Registration + Login Tutorial and Example with Spring Boot, Spring Security, Spring Data JPA, Hibernate, HSQL, JSP and Bootstrap]
+
+#Run tests
+
+To run only test, the command example is the following:
+
+"C:\software\apache-maven-3.6.1-bin\apache-maven-3.6.1\bin\mvn" test
+
+to run the application with tests, the command example is the folling
+
+"C:\software\apache-maven-3.6.1-bin\apache-maven-3.6.1\bin\mvn" package && java -jar target/deportes_api-0.0.1-SNAPSHOT.jar
