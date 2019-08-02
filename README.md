@@ -27,12 +27,17 @@ El api desarrollada en este repositorio tiene compo objetivo crear una inferzar 
 3. [Registration + Login Tutorial and Example with Spring Boot, Spring Security, Spring Data JPA, Hibernate, HSQL, JSP and Bootstrap]
 4. [How to Test a Spring Boot Application](https://stackabuse.com/how-to-test-a-spring-boot-application/)
 
-#Run tests
+## Ejecución de pruebas unitarias 
 
-To run only test, the command example is the following:
-
+La ejecución de las pruebs unitarias del proyecto se realiza con la sentencia siguiente:
+´´´
 "C:\software\apache-maven-3.6.1-bin\apache-maven-3.6.1\bin\mvn" test
+´´´
 
-to run the application with tests, the command example is the folling
-
+La ejecución de las pruebas unitarias y la ejecución de la aplicacion se realiza con la sentencia siguientes:
+´´´
 "C:\software\apache-maven-3.6.1-bin\apache-maven-3.6.1\bin\mvn" package && java -jar target/deportes_api-0.0.1-SNAPSHOT.jar
+´´´
+
+La dirección C:\software\apache-maven-3.6.1-bin\apache-maven-3.6.1\bin es donde se encuentra instalado maven-mvn
+
