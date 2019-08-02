@@ -30,14 +30,14 @@ El api desarrollada en este repositorio tiene compo objetivo crear una inferzar 
 ## Ejecución de pruebas unitarias 
 
 La ejecución de las pruebs unitarias del proyecto se realiza con la sentencia siguiente:
-´´´
+```sh
 "C:\software\apache-maven-3.6.1-bin\apache-maven-3.6.1\bin\mvn" test
-´´´
+```
 
 La ejecución de las pruebas unitarias y la ejecución de la aplicacion se realiza con la sentencia siguientes:
-´´´
+```sh
 "C:\software\apache-maven-3.6.1-bin\apache-maven-3.6.1\bin\mvn" package && java -jar target/deportes_api-0.0.1-SNAPSHOT.jar
-´´´
+```
 
 La dirección C:\software\apache-maven-3.6.1-bin\apache-maven-3.6.1\bin es donde se encuentra instalado maven-mvn
 
