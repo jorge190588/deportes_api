@@ -1,4 +1,18 @@
-# API
+# Application Programming Interface (API) o Interfaz de Programación de Aplicaciones
+
+El api desarrollada en este repositorio tiene compo objetivo crear una inferzar para un sistema que gestiona los procesos de eventos deportivos para todo el pais.   Los elementos fundamentales de este proyecto son los siguientes:
+
+1. Codificación: La escritura de codigo esta fundamentada en la programación orientada a objetos, las buenas practicas de código limpio, el concepto de error first, manejo de excepciones, entre otros.
+2. Pruebas unitarias: TDD
+3. Cada de datos con Hibernate:
+4. Documentación de servicios con swagger:
+5. Registro de logs:
+
+## Requerimientos
+
+1. Eclipse IDE for Enterprise Java Developers (Version: 2019-03 (4.11.0))
+2. J2SE-1.5 (jdk-12.0.1), dirección física "C:\Program Files\Java\jdk-12.0.1"
+
 
 ## Pasos para crear la versión inicial
 
