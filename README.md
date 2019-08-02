@@ -6,7 +6,7 @@ El api desarrollada en este repositorio tiene compo objetivo crear una inferzar 
 2. Pruebas unitarias: se usa MockMvc y Teste Driven Development-TDD
 3. Cada de datos con Hibernate:
 4. Documentación de servicios con swagger:
-5. Registro de logs:
+5. Registro de logs:  [Logger](https://stackoverflow.com/questions/21881846/where-does-the-slf4j-log-file-get-saved)
 6. Seguridad con Oauth2
 
 ## Requerimientos
