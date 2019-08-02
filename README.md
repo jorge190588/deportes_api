@@ -65,11 +65,12 @@ La dirección C:\software\apache-maven-3.6.1-bin\apache-maven-3.6.1\bin es donde
 
 ### Creación de la conexión a la base de datos
 
-Configurar el archivo application.properties con los datos siguientes:
+La configuración de la cadena de conexión el primer ejemplo se ha obtenido del articulo [Configuring Spring Boot for Microsoft SQL Server](https://springframework.guru/configuring-spring-boot-for-microsoft-sql-server/) los datos de configuración se deben asignar en el archivo application.properties con los datos siguientes:
+
 ```sh
-spring.datasource.url=jdbc:sqlserver://localhost;databaseName=springbootdb
+spring.datasource.url=jdbc:sqlserver://localhost;databaseName=sportsdata
 spring.datasource.username=sa
-spring.datasource.password=Projects@123
+spring.datasource.password=Web45666
 spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
 spring.jpa.show-sql=true
 spring.jpa.hibernate.dialect=org.hibernate.dialect.SQLServer2012Dialect
