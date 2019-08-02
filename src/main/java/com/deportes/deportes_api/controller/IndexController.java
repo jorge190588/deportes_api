@@ -1,7 +1,7 @@
 package com.deportes.deportes_api.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger; 
+import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,16 +13,16 @@ import com.deportes.deportes_api.tablas.Deporte;
 public class IndexController {
 	@Autowired
 	DeporteRepositorio repository;
-	 Logger logger = LoggerFactory.getLogger(IndexController.class);
+	Logger logger = Logger.getLogger(IndexController.class);
 	
-	 @RequestMapping("/")
-	 public String index() {
+	@RequestMapping("/")
+	public String index() {
 		 Deporte d = new Deporte();
 		 d.setVersion(1);
 		 d.setNombre("primer ejemplo");
 		 repository.save(d);
 		 logger.info("guardado");
 		 return "Greetings from Spring Boot!";
-	 }
+	}
 	 
 }
