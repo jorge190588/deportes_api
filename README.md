@@ -65,13 +65,18 @@ La dirección C:\software\apache-maven-3.6.1-bin\apache-maven-3.6.1\bin es donde
 
 ### Creación de la conexión a la base de datos
 
-Configurar el archivo application.properties con los datos siguientes:
+La configuración de la cadena de conexión el primer ejemplo se ha obtenido del articulo [Configuring Spring Boot for Microsoft SQL Server](https://springframework.guru/configuring-spring-boot-for-microsoft-sql-server/) los datos de configuración se deben asignar en el archivo application.properties con los datos siguientes:
+
 ```sh
-spring.datasource.url=jdbc:sqlserver://localhost;databaseName=springbootdb
+spring.datasource.url=jdbc:sqlserver://localhost;databaseName=sportsdata
 spring.datasource.username=sa
-spring.datasource.password=Projects@123
+spring.datasource.password=Web45666
 spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
 spring.jpa.show-sql=true
 spring.jpa.hibernate.dialect=org.hibernate.dialect.SQLServer2012Dialect
-spring.jpa.hibernate.ddl-auto = create-drop
+spring.jpa.hibernate.ddl-auto = create
 ```
+
+## Crear repositorios, entidades y componentes con Hibernate
+
+Para crear las tablas, sincronizarlas y realiar un CRUD usando Hibernate use la guia [Spring Boot Web Application – Part 3 – Spring Data JPA](https://springframework.guru/spring-boot-web-application-part-3-spring-data-jpa/) y para extender la interfaz CrudRepository con el uso de transacciones use la guia [Spring Boot CrudRepository Example](https://www.concretepage.com/spring-boot/spring-boot-crudrepository-example)
