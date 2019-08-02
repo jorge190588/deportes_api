@@ -43,3 +43,35 @@ La ejecución de las pruebas unitarias y la ejecución de la aplicacion se reali
 
 La dirección C:\software\apache-maven-3.6.1-bin\apache-maven-3.6.1\bin es donde se encuentra instalado maven-mvn
 
+
+## Instalación de JBoss Tools, herramientas para hibernate
+
+### Pasos de instalación
+
+1. Hacer clic en la opción Eclipse Marketplace del menú Help
+2. Buscar JBoss Tools 4.11.0.Final
+3. Hacer clic en instalar
+4. Seleccionar todos los elementos
+5. Hacer clic en Confimar
+6. Aceptar los terminos de los acuerdos de la licencia
+7. Hacer clic en Finish, esperar hasta que instale el software
+
+### Abrir la perspectiva
+
+1. Seleccionar la opcion "Open Perspective" de la opción "Perspective" del Menu "Windows"
+2. Seleccionar la opcion "Other.."
+3. Seleccionar la opcion "Hibernate" 
+4. Hacer clic en "Open"
+
+### Creación de la conexión a la base de datos
+
+Configurar el archivo application.properties con los datos siguientes:
+```sh
+spring.datasource.url=jdbc:sqlserver://localhost;databaseName=springbootdb
+spring.datasource.username=sa
+spring.datasource.password=Projects@123
+spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+spring.jpa.show-sql=true
+spring.jpa.hibernate.dialect=org.hibernate.dialect.SQLServer2012Dialect
+spring.jpa.hibernate.ddl-auto = create-drop
+```
