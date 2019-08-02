@@ -13,7 +13,7 @@ import com.deportes.deportes_api.tablas.Deporte;
 public class IndexController {
 	@Autowired
 	DeporteRepositorio repository;
-	final static Logger logger = LoggerFactory.getLogger(IndexController.class);
+	 Logger logger = LoggerFactory.getLogger(IndexController.class);
 	
 	 @RequestMapping("/")
 	 public String index() {
