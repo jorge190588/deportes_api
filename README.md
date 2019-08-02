@@ -7,6 +7,7 @@ El api desarrollada en este repositorio tiene compo objetivo crear una inferzar 
 3. Cada de datos con Hibernate:
 4. Documentación de servicios con swagger:
 5. Registro de logs:
+6. Seguridad con Oauth2
 
 ## Requerimientos
 
