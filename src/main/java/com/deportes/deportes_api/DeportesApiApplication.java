@@ -6,14 +6,15 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-//@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
+
 @SpringBootApplication
-//@ComponentScan({"com.deportes.deportes_api.cargadores"})
-//@EntityScan("com.deportes.deportes_api.tablas")
-//@EnableJpaRepositories({"com.deportes.deportes_api.repositorios","com.deportes.deportes_api.controller"})
-public class DeportesApiApplication extends SpringBootServletInitializer{
+@Import(SwaggerConfiguration.class)
+public class DeportesApiApplication extends SpringBootServletInitializer implements WebMvcConfigurer{
 
 	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
@@ -22,5 +23,10 @@ public class DeportesApiApplication extends SpringBootServletInitializer{
 	
 	public static void main(String[] args) {
 		SpringApplication.run(DeportesApiApplication.class, args);
+	}
+	
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("swagger-ui.html")
+        .addResourceLocations("classpath:/META-INF/resources/");
 	}
 }
