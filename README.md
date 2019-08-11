@@ -80,3 +80,8 @@ spring.jpa.hibernate.ddl-auto = create
 ## Crear repositorios, entidades y componentes con Hibernate
 
 Para crear las tablas, sincronizarlas y realiar un CRUD usando Hibernate use la guia [Spring Boot Web Application – Part 3 – Spring Data JPA](https://springframework.guru/spring-boot-web-application-part-3-spring-data-jpa/) y para extender la interfaz CrudRepository con el uso de transacciones use la guia [Spring Boot CrudRepository Example](https://www.concretepage.com/spring-boot/spring-boot-crudrepository-example)
+
+
+## SWAGGER
+
+Los documentos utilizados de guia para la implementación de swagger en el proyecto es [Swagger documentando nuestro API REST](https://www.arquitecturajava.com/swagger-documentando-nuestro-api-rest/) y [Setting Up Swagger 2 with a Spring REST API](https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api)
