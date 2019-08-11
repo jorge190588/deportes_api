@@ -17,12 +17,14 @@ public class IndexController {
 	
 	@RequestMapping("/")
 	public String index() {
-		 Deporte d = new Deporte();
-		 d.setVersion(1);
-		 d.setNombre("primer ejemplo");
-		 repository.save(d);
-		 logger.info("guardado");
-		 return "Greetings from Spring Boot!";
+		logger.trace("access to: / route");
+		
+		Deporte d = new Deporte();
+		d.setVersion(1);
+		d.setNombre("primer ejemplo");
+		repository.save(d);
+		logger.info("Deporte: guardar");
+		return d.getId().toString();
 	}
 	 
 }
