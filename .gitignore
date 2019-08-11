@@ -3,3 +3,7 @@
 /build/
 /target/
 /.metadata/
+mylogs.log
+.project
+.classpath
+.settings/
