@@ -89,3 +89,7 @@ Los documentos utilizados de guia para la implementación de swagger en el proye
 ## oAuth 2.0
 
 El documento de referencia para usar un servidor o un saas es el siguiente: [A Quick Guide to OAuth 2.0 with Spring Security ](https://developer.okta.com/blog/2019/03/12/oauth2-spring-security-guide?utm_campaign=text_website_all_multiple_dev_dev_oauth2-spring-security_null&utm_source=oauthio&utm_medium=cpc#build-your-client-app)
+
+
+## ORM Methods.
+1. [Spring Data JPA - Extending PagingAndSortingRepository](https://www.logicbig.com/tutorials/spring-framework/spring-data/using-paging-and-sorting-repository.html)
