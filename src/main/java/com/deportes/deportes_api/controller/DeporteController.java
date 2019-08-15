@@ -4,6 +4,9 @@ import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +24,7 @@ public class DeporteController {
 	
 	@GetMapping("/finbyid/{id}")
 	public @ResponseBody  Optional<Deporte> finbyid(@PathVariable int id) {
-		logger.info("access to: / deporte/finbyid/{"+id+"}");
+		logger.info("access to: / deporte/finbyid/"+id);
 		Optional<Deporte> list = null;
 		try {
 			list= repository.findById(id);
@@ -59,5 +62,20 @@ public class DeporteController {
 		}
 		
 		return deporte;
+	}
+	
+	@GetMapping("/page/{sortValues}/{sortType}/{pageNumber}/{pageSize}")
+	public  @ResponseBody  Page<Deporte>  page(@PathVariable String sortValues,@PathVariable String sortType,@PathVariable int pageNumber,@PathVariable int pageSize) {
+		logger.trace("access to: / deporte/page/"+sortValues+"/"+sortType+"/"+pageNumber+"/"+pageSize);
+		Page<Deporte>  list = null;
+		PageRequest pageable = null;
+		try {
+			if (sortType.equals("desc")) pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortValues).descending());
+			else pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortValues).ascending());
+			list = repository.findAll(pageable);
+		}catch(Exception ex){
+			logger.error(ex);
+		}
+		return list;
 	}
 }
