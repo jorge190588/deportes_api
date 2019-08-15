@@ -1,5 +1,6 @@
 package com.deportes.deportes_api.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
@@ -22,12 +23,54 @@ public class DeporteController {
 	DeporteRepositorio repository;
 	Logger logger = Logger.getLogger(DeporteController.class);
 	
+	@GetMapping("/save")
+	public Deporte index() {
+		logger.trace("access to: / route");
+		Deporte deporte = null;
+		try {
+			Deporte d = new Deporte();
+			d.setVersion(1);
+			d.setNombre("primer ejemplo");
+			repository.save(d);
+			deporte= d;
+			logger.info("Deporte: registro guardado");	
+		}catch(Exception ex) {
+			logger.error(ex);
+		}
+		
+		return deporte;
+	}
+	
 	@GetMapping("/finbyid/{id}")
 	public @ResponseBody  Optional<Deporte> finbyid(@PathVariable int id) {
 		logger.info("access to: / deporte/finbyid/"+id);
 		Optional<Deporte> list = null;
 		try {
 			list= repository.findById(id);
+		}catch(Exception ex){
+			logger.error(ex);
+		}
+		return list;
+	}
+	
+	@GetMapping("/findbynombre/{name}")
+	public @ResponseBody  List<Deporte> finbyname(@PathVariable String name) {
+		logger.info("access to: / deporte/finbynombre/"+name);
+		List<Deporte> list = null;
+		try {
+			list= repository.findByNombre(name);
+		}catch(Exception ex){
+			logger.error(ex);
+		}
+		return list;
+	}
+	
+	@GetMapping("/findbynombreyversion/{name}/{version}")
+	public @ResponseBody  List<Deporte> finbynameyversion(@PathVariable String name,@PathVariable int version) {
+		logger.info("access to: / deporte/finbynombre/"+name+"/"+version);
+		List<Deporte> list = null;
+		try {
+			list= repository.findByNombreAndVersion(name,version);
 		}catch(Exception ex){
 			logger.error(ex);
 		}
@@ -44,24 +87,6 @@ public class DeporteController {
 			logger.error(ex);
 		}
 		return list;
-	}
-	
-	@GetMapping("/save")
-	public Deporte index() {
-		logger.trace("access to: / route");
-		Deporte deporte = null;
-		try {
-			Deporte d = new Deporte();
-			d.setVersion(1);
-			d.setNombre("primer ejemplo");
-			repository.save(d);
-			deporte= d;
-			logger.info("Deporte: guardar");	
-		}catch(Exception ex) {
-			logger.error(ex);
-		}
-		
-		return deporte;
 	}
 	
 	@GetMapping("/page/{sortValues}/{sortType}/{pageNumber}/{pageSize}")
