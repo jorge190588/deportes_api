@@ -19,16 +19,7 @@ import org.springframework.data.jpa.domain.Specification;
 public class Filter<T> {
 	Logger logger = Logger.getLogger(Filter.class);
 	
-	
-    /*public Page<?> findByCriteria(JSONArray searchCriteriaArray, PageRequest pageRequest){
-    	Specification specification= getSpecification(searchCriteriaArray);
-    	Page<?> page = repository.findAll(specification,pageRequest);
-        page.getTotalElements();
-        page.getTotalPages();   
-        return page;
-    }*/
-    
-    public Specification<T> getSpecification(final JSONArray searchCriteriaArray, final JSONArray orderCriteriaArray) {
+	public Specification<T> getSpecification(final JSONArray searchCriteriaArray, final JSONArray orderCriteriaArray) {
 		return new Specification<T>() {
 			@Override
 			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,    CriteriaBuilder builder) {  
