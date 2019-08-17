@@ -95,3 +95,4 @@ El documento de referencia para usar un servidor o un saas es el siguiente: [A Q
 1. [Spring Data JPA - Extending PagingAndSortingRepository](https://www.logicbig.com/tutorials/spring-framework/spring-data/using-paging-and-sorting-repository.html)
 2. [Spring Boot CrudRepository Example](https://www.concretepage.com/spring-boot/spring-boot-crudrepository-example)
 3. [Spring JPA dynamic query example](https://javadeveloperzone.com/spring/spring-jpa-dynamic-query-example/)
+4. [Simplification of Data Access Layer Implementation using JPA Specification](https://medium.com/monstar-lab-bangladesh-engineering/simplification-of-data-access-layer-implementation-using-jpa-specification-43dda2da485)
