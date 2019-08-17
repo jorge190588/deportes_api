@@ -1,5 +1,7 @@
 package com.deportes.deportes_api.repositorios;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
@@ -12,5 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface DeporteRepositorio<T> extends CrudRepository<Deporte, Integer>, PagingAndSortingRepository<Deporte, Integer>
 											, JpaSpecificationExecutor<Deporte>, JpaRepository<Deporte, Integer>{
-	 
+	List<Deporte> findByNombre(String name);
+	List<Deporte> findByNombreAndVersion(String name, int version);
 }

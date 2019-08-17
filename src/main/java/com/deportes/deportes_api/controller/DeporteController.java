@@ -62,7 +62,7 @@ public class DeporteController<T> {
 		logger.info("access to: / deporte/finbynombre/"+name);
 		List<Deporte> list = null;
 		try {
-			//list= repository.findByNombre(name);
+			list= repository.findByNombre(name);
 		}catch(Exception ex){
 			logger.error(ex);
 		}
@@ -74,7 +74,7 @@ public class DeporteController<T> {
 		logger.info("access to: / deporte/finbynombre/"+name+"/"+version);
 		List<Deporte> list = null;
 		try {
-			//list= repository.findByNombreAndVersion(name,version);
+			list= repository.findByNombreAndVersion(name,version);
 		}catch(Exception ex){
 			logger.error(ex);
 		}
