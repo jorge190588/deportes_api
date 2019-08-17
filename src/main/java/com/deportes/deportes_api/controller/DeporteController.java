@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.deportes.deportes_api.repositorios.DeporteRepositorio;
 import com.deportes.deportes_api.tablas.Deporte;
-import com.deportes.deportes_api.tools.Filter;
+import com.deportes.deportes_api.tools.JPAcustomSpecification;
 
 @RestController
 @RequestMapping("deporte")
@@ -33,11 +33,11 @@ public class DeporteController<T> {
 	@Autowired
 	DeporteRepositorio repository;
 	Logger logger = Logger.getLogger(DeporteController.class);
-	Filter filter = new Filter();
+	JPAcustomSpecification jpacustomSpecification = new JPAcustomSpecification();
 	
 	@GetMapping("/save")
 	public Deporte index() {
-		logger.trace("access to: / route");
+		logger.info("access to: / route");
 		Deporte deporte = null;
 		try {
 			Deporte d = new Deporte();
@@ -91,7 +91,7 @@ public class DeporteController<T> {
 	
 	@GetMapping("/findall")
 	public @ResponseBody  Iterable<Deporte> findall() {
-		logger.trace("access to: / deporte/findall");
+		logger.info("access to: / deporte/findall");
 		Iterable<Deporte> list = null;
 		try {
 			list= repository.findAll();
@@ -110,7 +110,7 @@ public class DeporteController<T> {
 			 logger.info("filter "+searchCriteria);
 			 if (searchCriteria.length()>0)	searchCriteriaArray = new JSONArray(searchCriteria);
 			 if (orderCriteria.length()>0)	orderCriteriaArray = new JSONArray(orderCriteria);
-			 page = repository.findAll(filter.getSpecification(searchCriteriaArray,orderCriteriaArray ),PageRequest.of(pageNumber, pageSize));
+			 page = repository.findAll(jpacustomSpecification.getSpecification(searchCriteriaArray,orderCriteriaArray ),PageRequest.of(pageNumber, pageSize));
 			 page.getTotalElements();
 		     page.getTotalPages();   
 

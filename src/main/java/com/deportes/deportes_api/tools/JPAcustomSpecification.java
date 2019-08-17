@@ -16,8 +16,8 @@ import org.codehaus.jettison.json.JSONObject;
 import org.springframework.data.jpa.domain.Specification;
 
 
-public class Filter<T> {
-	Logger logger = Logger.getLogger(Filter.class);
+public class JPAcustomSpecification<T> {
+	Logger logger = Logger.getLogger(JPAcustomSpecification.class);
 	
 	public Specification<T> getSpecification(final JSONArray searchCriteriaArray, final JSONArray orderCriteriaArray) {
 		return new Specification<T>() {
