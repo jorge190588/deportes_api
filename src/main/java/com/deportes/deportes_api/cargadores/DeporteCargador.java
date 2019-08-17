@@ -1,13 +1,10 @@
 package com.deportes.deportes_api.cargadores;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
-
 import com.deportes.deportes_api.repositorios.DeporteRepositorio;
-import com.deportes.deportes_api.tablas.Deporte;
 
 @Component
 public class DeporteCargador implements ApplicationListener<ContextRefreshedEvent>  {
@@ -18,10 +15,9 @@ public class DeporteCargador implements ApplicationListener<ContextRefreshedEven
     public void setDeporteRepository(DeporteRepositorio deporteRepositorio) {
         this.deporteRepositorio = deporteRepositorio;
     }
-
+    
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		System.out.println("DeporteCargador");
-		
 	}
     
     /*public void onApplicationEvent(ContextRefreshedEvent event) {

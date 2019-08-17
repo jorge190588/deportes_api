@@ -1,27 +1,39 @@
 package com.deportes.deportes_api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.deportes.deportes_api.repositorios.DeporteRepositorio;
-import com.deportes.deportes_api.tablas.*;
+import com.deportes.deportes_api.tablas.Deporte;
+import com.deportes.deportes_api.tools.Filter;
 
 @RestController
 @RequestMapping("deporte")
-public class DeporteController {
+public class DeporteController<T> {
 	@Autowired
 	DeporteRepositorio repository;
 	Logger logger = Logger.getLogger(DeporteController.class);
+	Filter filter = new Filter();
 	
 	@GetMapping("/save")
 	public Deporte index() {
@@ -58,7 +70,7 @@ public class DeporteController {
 		logger.info("access to: / deporte/finbynombre/"+name);
 		List<Deporte> list = null;
 		try {
-			list= repository.findByNombre(name);
+			//list= repository.findByNombre(name);
 		}catch(Exception ex){
 			logger.error(ex);
 		}
@@ -70,7 +82,7 @@ public class DeporteController {
 		logger.info("access to: / deporte/finbynombre/"+name+"/"+version);
 		List<Deporte> list = null;
 		try {
-			list= repository.findByNombreAndVersion(name,version);
+			//list= repository.findByNombreAndVersion(name,version);
 		}catch(Exception ex){
 			logger.error(ex);
 		}
@@ -89,18 +101,23 @@ public class DeporteController {
 		return list;
 	}
 	
-	@GetMapping("/page/{sortValues}/{sortType}/{pageNumber}/{pageSize}")
-	public  @ResponseBody  Page<Deporte>  page(@PathVariable String sortValues,@PathVariable String sortType,@PathVariable int pageNumber,@PathVariable int pageSize) {
-		logger.trace("access to: / deporte/page/"+sortValues+"/"+sortType+"/"+pageNumber+"/"+pageSize);
-		Page<Deporte>  list = null;
-		PageRequest pageable = null;
+	@GetMapping("/page/{pageNumber}/{pageSize}")
+	public  @ResponseBody  Page  page(@PathVariable int pageNumber,@PathVariable int pageSize,@RequestParam String searchCriteria,@RequestParam String orderCriteria) {
+		logger.info("access to: / deporte/page/"+pageNumber+"/"+pageSize+"?searchCriteria="+searchCriteria+"&orderCriteria="+orderCriteria);
+		Page<?> page=null;
+		JSONArray searchCriteriaArray=null, orderCriteriaArray=null; 
 		try {
-			if (sortType.equals("desc")) pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortValues).descending());
-			else pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortValues).ascending());
-			list = repository.findAll(pageable);
+			 logger.info("filter "+searchCriteria);
+			 if (searchCriteria.length()>0)	searchCriteriaArray = new JSONArray(searchCriteria);
+			 if (orderCriteria.length()>0)	orderCriteriaArray = new JSONArray(orderCriteria);
+			 page = repository.findAll(filter.getSpecification(searchCriteriaArray,orderCriteriaArray ),PageRequest.of(pageNumber, pageSize));
+			 page.getTotalElements();
+		     page.getTotalPages();   
+
 		}catch(Exception ex){
 			logger.error(ex);
 		}
-		return list;
+		return page;
 	}
+	    
 }
