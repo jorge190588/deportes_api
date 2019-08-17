@@ -15,20 +15,24 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.data.jpa.domain.Specification;
 
-
+@SuppressWarnings("serial")
 public class JPAcustomSpecification<T> {
 	Logger logger = Logger.getLogger(JPAcustomSpecification.class);
+	
 	
 	public Specification<T> getSpecification(final JSONArray searchCriteriaArray, final JSONArray orderCriteriaArray) {
 		return new Specification<T>() {
 			@Override
-			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,    CriteriaBuilder builder) {  
-				
-				List<Predicate> predicates = getPredicateList(root,builder, searchCriteriaArray);
-				List<Order> orderList = getOrderList(orderCriteriaArray, root, builder);
-				query.orderBy(orderList);
-                return builder.and(predicates.toArray(new Predicate[predicates.size()]));
-
+			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {  
+				if (orderCriteriaArray!=null) {
+					List<Order> orderList = getOrderList(orderCriteriaArray, root, builder);
+					query.orderBy(orderList);	
+				}
+				if (searchCriteriaArray!=null) {
+					List<Predicate> predicates = getPredicateList(root,builder, searchCriteriaArray);
+	                return builder.and(predicates.toArray(new Predicate[predicates.size()]));	
+				}else
+					return null;
 			}
 		};
 	}

@@ -8,8 +8,12 @@ import org.codehaus.jettison.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +23,7 @@ import com.deportes.deportes_api.repositorios.DeporteRepositorio;
 import com.deportes.deportes_api.tablas.Deporte;
 import com.deportes.deportes_api.tools.JPAcustomSpecification;
 
+@SuppressWarnings({"rawtypes","unchecked"})
 @RestController
 @RequestMapping("deporte")
 public class DeporteController<T> {
@@ -27,27 +32,55 @@ public class DeporteController<T> {
 	Logger logger = Logger.getLogger(DeporteController.class);
 	JPAcustomSpecification jpacustomSpecification = new JPAcustomSpecification();
 	
-	@GetMapping("/save")
-	public Deporte index() {
-		logger.info("access to: / route");
+	
+	@PostMapping("/save")
+	public Deporte save(@RequestBody Deporte newDeporte) {
+		logger.info("access to: post /save route");
 		Deporte deporte = null;
 		try {
-			Deporte d = new Deporte();
-			d.setVersion(1);
-			d.setNombre("primer ejemplo");
-			repository.save(d);
-			deporte= d;
+			deporte= (Deporte) repository.save(newDeporte);
 			logger.info("Deporte: registro guardado");	
 		}catch(Exception ex) {
 			logger.error(ex);
 		}
-		
 		return deporte;
 	}
 	
-	@GetMapping("/finbyid/{id}")
+	@DeleteMapping("/{id}")
+	public Boolean delete(@PathVariable Integer id) {
+		logger.info("access to: Delete /{"+id+"} route");
+		try {
+			repository.deleteById(id);;
+			return true;
+		}catch(Exception ex) {
+			logger.error(ex);
+			return false;
+		}
+	}
+	
+	@PutMapping("/{id}")
+	public Deporte updateEmployee(@RequestBody Deporte newDeporte, @PathVariable Integer id) {
+		try {
+			return (Deporte) repository.findById(id)
+				      .map(deporte -> {
+				        ((Deporte) deporte).setNombre(newDeporte.getNombre());
+				        ((Deporte) deporte).setVersion(newDeporte.getVersion());
+				        return repository.save(deporte);
+				      })
+				      .orElseGet(() -> {
+				    	  newDeporte.setId(id);
+				        return repository.save(newDeporte);
+				      });	
+		}catch(Exception ex) {
+			logger.error(ex);
+			return null;
+		}
+		
+	}
+	
+	@GetMapping("/{id}")
 	public @ResponseBody  Optional<Deporte> finbyid(@PathVariable int id) {
-		logger.info("access to: / deporte/finbyid/"+id);
+		logger.info("access to: / deporte/"+id);
 		Optional<Deporte> list = null;
 		try {
 			list= repository.findById(id);
@@ -94,22 +127,23 @@ public class DeporteController<T> {
 	}
 	
 	@GetMapping("/page/{pageNumber}/{pageSize}")
-	public  @ResponseBody  Page  page(@PathVariable int pageNumber,@PathVariable int pageSize,@RequestParam String searchCriteria,@RequestParam String orderCriteria) {
+	public  @ResponseBody  Page  page(	@PathVariable int pageNumber,@PathVariable int pageSize,
+			@RequestParam("searchCriteria") Optional<String> searchCriteria,@RequestParam Optional<String> orderCriteria) {
 		logger.info("access to: / deporte/page/"+pageNumber+"/"+pageSize+"?searchCriteria="+searchCriteria+"&orderCriteria="+orderCriteria);
-		Page<?> page=null;
 		JSONArray searchCriteriaArray=null, orderCriteriaArray=null; 
 		try {
 			 logger.info("filter "+searchCriteria);
-			 if (searchCriteria.length()>0)	searchCriteriaArray = new JSONArray(searchCriteria);
-			 if (orderCriteria.length()>0)	orderCriteriaArray = new JSONArray(orderCriteria);
-			 page = repository.findAll(jpacustomSpecification.getSpecification(searchCriteriaArray,orderCriteriaArray ),PageRequest.of(pageNumber, pageSize));
+			 if (!searchCriteria.isEmpty())	searchCriteriaArray = new JSONArray(searchCriteria.get());
+			 if (!orderCriteria.isEmpty())	orderCriteriaArray = new JSONArray(orderCriteria.get());
+			 Page<?> page = repository.findAll(jpacustomSpecification.getSpecification(searchCriteriaArray,orderCriteriaArray ),PageRequest.of(pageNumber, pageSize));
 			 page.getTotalElements();
 		     page.getTotalPages();   
-
+		     return page;
 		}catch(Exception ex){
 			logger.error(ex);
+			return null;
 		}
-		return page;
+		
 	}
 	    
 }
