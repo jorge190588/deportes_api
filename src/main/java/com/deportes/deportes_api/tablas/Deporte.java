@@ -1,5 +1,7 @@
 package com.deportes.deportes_api.tablas;
 
+import java.util.Date;
+
 import javax.persistence.*;
 @Entity
 public class Deporte {
@@ -9,6 +11,8 @@ public class Deporte {
     @Version
     private Integer version;
     private String nombre;
+    private Date createdAt;
+    private Date updatedAt;
     
     public String getNombre() {
         return nombre;
@@ -28,5 +32,17 @@ public class Deporte {
     public void setId(Integer id) {
         this.id = id;
     }
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+	public void setUpdatedAt(Date date) {
+		this.updatedAt = date;
+	}
    
 }
