@@ -64,7 +64,6 @@ public class DeporteController<T> {
 			return (Deporte) repository.findById(id)
 				      .map(deporte -> {
 				        ((Deporte) deporte).setNombre(newDeporte.getNombre());
-				        ((Deporte) deporte).setVersion(newDeporte.getVersion());
 				        return repository.save(deporte);
 				      })
 				      .orElseGet(() -> {
@@ -102,24 +101,16 @@ public class DeporteController<T> {
 		return list;
 	}
 	
-	@GetMapping("/findbynombreyversion/{name}/{version}")
-	public @ResponseBody  List<Deporte> finbynameyversion(@PathVariable String name,@PathVariable int version) {
-		logger.info("access to: / deporte/finbynombre/"+name+"/"+version);
-		List<Deporte> list = null;
-		try {
-			list= repository.findByNombreAndVersion(name,version);
-		}catch(Exception ex){
-			logger.error(ex);
-		}
-		return list;
-	}
 	
 	@GetMapping("/findall")
-	public @ResponseBody  Iterable<Deporte> findall() {
-		logger.info("access to: / deporte/findall");
+	public @ResponseBody  Iterable<Deporte> findall(@RequestParam("searchCriteria") Optional<String> searchCriteria,@RequestParam Optional<String> orderCriteria) {
+		logger.info("access to: / deporte/findall?searchCriteria="+searchCriteria+"&orderCriteria="+orderCriteria);
 		Iterable<Deporte> list = null;
+		JSONArray searchCriteriaArray=null, orderCriteriaArray=null;
 		try {
-			list= repository.findAll();
+			 if (!searchCriteria.isEmpty())	searchCriteriaArray = new JSONArray(searchCriteria.get());
+			 if (!orderCriteria.isEmpty())	orderCriteriaArray = new JSONArray(orderCriteria.get());
+			 list= repository.findAll(jpacustomSpecification.getSpecification(searchCriteriaArray,orderCriteriaArray ));
 		}catch(Exception ex){
 			logger.error(ex);
 		}
@@ -132,7 +123,6 @@ public class DeporteController<T> {
 		logger.info("access to: / deporte/page/"+pageNumber+"/"+pageSize+"?searchCriteria="+searchCriteria+"&orderCriteria="+orderCriteria);
 		JSONArray searchCriteriaArray=null, orderCriteriaArray=null; 
 		try {
-			 logger.info("filter "+searchCriteria);
 			 if (!searchCriteria.isEmpty())	searchCriteriaArray = new JSONArray(searchCriteria.get());
 			 if (!orderCriteria.isEmpty())	orderCriteriaArray = new JSONArray(orderCriteria.get());
 			 Page<?> page = repository.findAll(jpacustomSpecification.getSpecification(searchCriteriaArray,orderCriteriaArray ),PageRequest.of(pageNumber, pageSize));
