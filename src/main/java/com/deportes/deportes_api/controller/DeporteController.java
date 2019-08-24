@@ -82,18 +82,6 @@ public class DeporteController<T> {
 		return list;
 	}
 	
-	@GetMapping("/findbynombre/{name}")
-	public @ResponseBody  List<Deporte> finbyname(@PathVariable String name) {
-		logger.info("access to: / deporte/finbynombre/"+name);
-		List<Deporte> list = null;
-		try {
-			list= repository.findByNombre(name);
-		}catch(Exception ex){
-			logger.error(ex);
-		}
-		return list;
-	}
-	
 	
 	@GetMapping("/findall")
 	public @ResponseBody  Iterable<Deporte> findall(@RequestParam("searchCriteria") Optional<String> searchCriteria,@RequestParam Optional<String> orderCriteria) {
