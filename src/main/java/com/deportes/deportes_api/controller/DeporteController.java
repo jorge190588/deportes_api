@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.deportes.deportes_api.repositorios.DeporteRepositorio;
 import com.deportes.deportes_api.tablas.Deporte;
+import com.deportes.deportes_api.tools.CrudValidations;
 import com.deportes.deportes_api.tools.DateTools;
 import com.deportes.deportes_api.tools.JPAcustomSpecification;
+import com.deportes.deportes_api.tools.RestResponse;
 
 @SuppressWarnings({"rawtypes","unchecked"})
 @RestController
@@ -33,6 +35,7 @@ public class DeporteController<T> {
 	Logger logger = Logger.getLogger(DeporteController.class);
 	JPAcustomSpecification jpacustomSpecification = new JPAcustomSpecification();
 	DateTools dateTools = new DateTools();
+	CrudValidations crud = new CrudValidations(repository,"Deporte");
 	
 	@PostMapping("/save")
 	public Deporte save(@RequestBody Deporte newDeporte) {
@@ -62,23 +65,9 @@ public class DeporteController<T> {
 	}
 	
 	@PutMapping("/{id}")
-	public Deporte updateEmployee(@RequestBody Deporte newDeporte, @PathVariable Integer id) {
-		try {
-			return (Deporte) repository.findById(id)
-				      .map(deporte -> {
-				        ((Deporte) deporte).setNombre(newDeporte.getNombre());
-				        ((Deporte) deporte).setUpdatedAt(dateTools.get_CurrentDate());
-				        return repository.save(deporte);
-				      })
-				      .orElseGet(() -> {
-				    	  newDeporte.setId(id);
-				    	  newDeporte.setCreatedAt(dateTools.get_CurrentDate());
-				        return repository.save(newDeporte);
-				      });	
-		}catch(Exception ex) {
-			logger.error(ex);
-			return null;
-		}
+	public RestResponse updateEmployee(@RequestBody Deporte updateElement, @PathVariable Integer id) {
+		crud = new CrudValidations(repository,"Deporte");
+		return crud.update(updateElement);
 	}
 	
 	@GetMapping("/{id}")
