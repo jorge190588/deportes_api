@@ -44,7 +44,7 @@ public class GenericMethod<T> {
 			}else if (param instanceof Set<?>){
 				method = genericClass.getClass().getMethod(this.name,Set.class);
 			}else if (param instanceof Object){
-				if (this.name=="update" || this.name=="create" || this.name=="delete"){
+				if (this.name=="update" || this.name=="save" || this.name=="delete"){
 					method = genericClass.getClass().getMethod(this.name,Object.class);
 				}else{
 					method = genericClass.getClass().getMethod(this.name,param.getClass());

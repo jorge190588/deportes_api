@@ -116,6 +116,31 @@ public class GenericValidations<T> {
 		}
 	}
 	
+	public void setCreatedAtInElement(Object _class){
+		String setMethodName="setCreatedAt",getMethodName="getCreatedAt";
+		GenericClass genericClass;
+		genericClass= new GenericClass(_class,setMethodName,(T) dateTools.get_CurrentDate());
+		genericClass.executeMethod();
+		if (genericClass.getIsError()==true){
+			this.setIsError(true); 
+			this.setErrorMessage(genericClass.getErrorMessage());
+			return;
+		}
+		
+		genericClass= new GenericClass(_class,getMethodName);
+		genericClass.executeMethod();
+		if (genericClass.getIsError()==true){
+			this.setIsError(true); 
+			this.setErrorMessage(genericClass.getErrorMessage());
+			return;
+		}
+		
+		if (genericClass.getResult()==null){
+			this.setIsError(true);
+			this.setErrorMessage("Error al ejecutar "+setMethodName+" en "+moduleName);
+		}
+	}
+	
 	public void checkIfListHasElements(List<T> list){
 		if (list.size()==0){
 			this.setIsError(true);
