@@ -50,37 +50,7 @@ public class CrudValidations {
 			
 			if (genericClass.getResult().equals(Optional.empty())) throw new Exception("Id no existe");
 			
-			
 			Object findedElement = ((Optional) genericClass.getResult()).get();
-			
-			/*List<?> list = (List<?>) ((Optional) genericClass.getResult()).get(); 
-			validations.checkIfListHasElements(list);
-			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
-			Object findedElement = list.get(0);*/
-			
-			for(Field param: findedElement.getClass().getDeclaredFields()){
-			       //you can also use .toGenericString() instead of .getName(). This will
-			       //give you the type information as well.
-
-			       System.out.println(param.getName());
-			   }
-			
-			 // Getting the PropertyDescriptors for the object
-	        PropertyDescriptor[] objDescriptors = PropertyUtils.getPropertyDescriptors(findedElement);
-
-	        // Iterating through each of the PropertyDescriptors
-	        for (PropertyDescriptor objDescriptor : objDescriptors) {
-	            try {
-	                String propertyName = objDescriptor.getName();
-	                Object propType = PropertyUtils.getPropertyType(findedElement, propertyName);
-	                Object propValue = PropertyUtils.getProperty(findedElement, propertyName);
-	                
-	                // Printing the details
-	                System.out.println("Property="+propertyName+", Type="+propType+", Value="+propValue);
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	            }
-	        }
 			
 			// set parameters
 			validations.setParametersValuesToElement(findedElement,updateElement);
@@ -100,6 +70,58 @@ public class CrudValidations {
 		return response;
 	}
 	
-
+	public RestResponse create(Object newElement){
+		GenericValidations validations;
+		RestResponse response= new RestResponse();
+		try{
+			validations = new GenericValidations(moduleName);
+			validations.checkIfParamIsNull(newElement,moduleName);
+			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
+			
+			validations.setCreatedAtInElement(newElement);
+			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
+				
+			genericClass = new GenericClass(model,"save",newElement);
+			genericClass.executeMethod();
+			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
+			response.set_data(genericClass.getResult());
+		}catch(Throwable exception){
+			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_CREATE,this.getClass().getSimpleName());
+			ErrorFormat _errorFormat = new ErrorFormat(ex);
+			response = new RestResponse();
+			response.set_error(_errorFormat.get_errorResponse());
+		} 
+		return response;
+	}
  
+	public RestResponse delete(String id){
+		RestResponse response = new RestResponse();
+		GenericValidations validations;
+		GenericClass genericClass;
+		try{
+			validations = new GenericValidations(moduleName);
+			
+			genericClass= new GenericClass(model,"getAll","id="+id);
+			genericClass.executeMethod();
+			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());
+			List<?> listWithSpecificId = (List<?>) genericClass.getResult(); 
+			
+			validations.checkIfParamIsNull(listWithSpecificId,moduleName);
+			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
+			
+			validations.checkIfListHasElements(listWithSpecificId);
+			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
+			
+			genericClass = new GenericClass(model,"delete",listWithSpecificId.get(0));
+			genericClass.executeMethod();
+			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
+			response.set_data(genericClass.getResult());
+		}catch(Throwable exception){
+			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_DELETE,this.getClass().getSimpleName());
+			ErrorFormat _errorFormat = new ErrorFormat(ex);
+			response.set_error(_errorFormat.get_errorResponse());
+		} 
+		return response;
+	}
+	
 }
