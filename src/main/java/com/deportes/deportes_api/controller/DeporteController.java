@@ -1,6 +1,5 @@
 package com.deportes.deportes_api.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
@@ -37,36 +36,27 @@ public class DeporteController<T> {
 	DateTools dateTools = new DateTools();
 	CrudValidations crud = new CrudValidations(repository,"Deporte");
 	
+	private void instanceCrud() {
+		if (crud!=null) crud = new CrudValidations(repository,"Deporte");
+	}
+	
 	@PostMapping("/save")
-	public Deporte save(@RequestBody Deporte newDeporte) {
+	public RestResponse save(@RequestBody Deporte newDeporte) {
 		logger.info("access to: post /save route");
-		Deporte deporte = null;
-		try {
-			newDeporte.setCreatedAt(dateTools.get_CurrentDate());
-			newDeporte.setUpdatedAt(null);
-			deporte= (Deporte) repository.save(newDeporte);
-			logger.info("Deporte: registro guardado");	
-		}catch(Exception ex) {
-			logger.error(ex);
-		}
-		return deporte;
+		instanceCrud();
+		return crud.create(newDeporte);
 	}
 	
 	@DeleteMapping("/{id}")
-	public Boolean delete(@PathVariable Integer id) {
+	public RestResponse delete(@PathVariable Integer id) {
 		logger.info("access to: Delete /{"+id+"} route");
-		try {
-			repository.deleteById(id);;
-			return true;
-		}catch(Exception ex) {
-			logger.error(ex);
-			return false;
-		}
+		instanceCrud();
+		return crud.delete(id.toString());
 	}
 	
 	@PutMapping("/{id}")
-	public RestResponse updateEmployee(@RequestBody Deporte updateElement, @PathVariable Integer id) {
-		crud = new CrudValidations(repository,"Deporte");
+	public RestResponse update(@RequestBody Deporte updateElement, @PathVariable Integer id) {
+		instanceCrud();
 		return crud.update(updateElement);
 	}
 	
