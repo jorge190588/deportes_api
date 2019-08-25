@@ -1,16 +1,24 @@
 package com.deportes.deportes_api.tablas;
 
 import java.util.Date;
-
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+
 @Entity
+@Table(name="deporte")
 public class Deporte {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Version
     private Integer version;
+    @Pattern(regexp = ".*([a-zA-Z0-9]{2}$)")
     private String nombre;
+    
+    @Pattern(regexp = "([a-zA-Z0-9]{10})",message="El código debe tener 10 caracteres")
+    @Column(name="codigo", unique=true)
+    private String codigo;
+    
     private Date createdAt;
     private Date updatedAt;
     
@@ -19,6 +27,12 @@ public class Deporte {
     }
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    public String getCodigo() {
+        return codigo;
+    }
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
     public Integer getVersion() {
         return version;
