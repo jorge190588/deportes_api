@@ -86,9 +86,12 @@ Para crear las tablas, sincronizarlas y realiar un CRUD usando Hibernate use la 
 
 Los documentos utilizados de guia para la implementación de swagger en el proyecto es [Swagger documentando nuestro API REST](https://www.arquitecturajava.com/swagger-documentando-nuestro-api-rest/) y [Setting Up Swagger 2 with a Spring REST API](https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api)
 
-## oAuth 2.0
+## Seguridad con JSON Web Token-JWT y OAuth 2.0
 
-El documento de referencia para usar un servidor o un saas es el siguiente: [A Quick Guide to OAuth 2.0 with Spring Security ](https://developer.okta.com/blog/2019/03/12/oauth2-spring-security-guide?utm_campaign=text_website_all_multiple_dev_dev_oauth2-spring-security_null&utm_source=oauthio&utm_medium=cpc#build-your-client-app)
+Los articulo consultados para implementar JWT y OAuth 2 son los siguientes:
+1. [Securing REST Services With OAuth2 in Spring Boot](https://dzone.com/articles/securing-rest-services-with-oauth2-in-springboot-1)
+2. [Using Spring Boot for OAuth2 and JWT REST Protection](https://www.toptal.com/spring/spring-boot-oauth2-jwt-rest-protection)
+3. [A Quick Guide to OAuth 2.0 with Spring Security](https://developer.okta.com/blog/2019/03/12/oauth2-spring-security-guide?utm_campaign=text_website_all_multiple_dev_dev_oauth2-spring-security_null&utm_source=oauthio&utm_medium=cpc#build-your-client-app)
 
 
 ## ORM Methods.
