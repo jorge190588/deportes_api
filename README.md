@@ -99,3 +99,6 @@ Los articulo consultados para implementar JWT y OAuth 2 son los siguientes:
 2. [Spring Boot CrudRepository Example](https://www.concretepage.com/spring-boot/spring-boot-crudrepository-example)
 3. [Spring JPA dynamic query example](https://javadeveloperzone.com/spring/spring-jpa-dynamic-query-example/)
 4. [Simplification of Data Access Layer Implementation using JPA Specification](https://medium.com/monstar-lab-bangladesh-engineering/simplification-of-data-access-layer-implementation-using-jpa-specification-43dda2da485)
+
+## Validaciones
+1. [Using Bean Validation](https://docs.oracle.com/javaee/6/tutorial/doc/gircz.html) 
