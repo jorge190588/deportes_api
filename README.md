@@ -102,3 +102,20 @@ Los articulo consultados para implementar JWT y OAuth 2 son los siguientes:
 
 ## Validaciones
 1. [Using Bean Validation](https://docs.oracle.com/javaee/6/tutorial/doc/gircz.html) 
+2. [How would I specify a Hibernate “@Pattern” annotation using a regular expression from a .properties file or database](https://stackoverflow.com/questions/8994864/how-would-i-specify-a-hibernate-pattern-annotation-using-a-regular-expression)
+
+Ejemplo:
+```
+String dynamicPattern = ...;
+
+ConstraintMapping mapping = new ConstraintMapping();
+mapping.type( ContactInfo.class )
+    .property( "workPhone", FIELD )
+    .constraint( new PatternDef().regexp( dynamicPattern ) );
+
+HibernateValidatorConfiguration config = 
+    Validation.byProvider( HibernateValidator.class ).configure();
+config.addMapping( mapping );
+
+Validator validator = config.buildValidatorFactory().getValidator();
+```
