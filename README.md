@@ -86,9 +86,12 @@ Para crear las tablas, sincronizarlas y realiar un CRUD usando Hibernate use la 
 
 Los documentos utilizados de guia para la implementación de swagger en el proyecto es [Swagger documentando nuestro API REST](https://www.arquitecturajava.com/swagger-documentando-nuestro-api-rest/) y [Setting Up Swagger 2 with a Spring REST API](https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api)
 
-## oAuth 2.0
+## Seguridad con JSON Web Token-JWT y OAuth 2.0
 
-El documento de referencia para usar un servidor o un saas es el siguiente: [A Quick Guide to OAuth 2.0 with Spring Security ](https://developer.okta.com/blog/2019/03/12/oauth2-spring-security-guide?utm_campaign=text_website_all_multiple_dev_dev_oauth2-spring-security_null&utm_source=oauthio&utm_medium=cpc#build-your-client-app)
+Los articulo consultados para implementar JWT y OAuth 2 son los siguientes:
+1. [Securing REST Services With OAuth2 in Spring Boot](https://dzone.com/articles/securing-rest-services-with-oauth2-in-springboot-1)
+2. [Using Spring Boot for OAuth2 and JWT REST Protection](https://www.toptal.com/spring/spring-boot-oauth2-jwt-rest-protection)
+3. [A Quick Guide to OAuth 2.0 with Spring Security](https://developer.okta.com/blog/2019/03/12/oauth2-spring-security-guide?utm_campaign=text_website_all_multiple_dev_dev_oauth2-spring-security_null&utm_source=oauthio&utm_medium=cpc#build-your-client-app)
 
 
 ## ORM Methods.
@@ -96,3 +99,23 @@ El documento de referencia para usar un servidor o un saas es el siguiente: [A Q
 2. [Spring Boot CrudRepository Example](https://www.concretepage.com/spring-boot/spring-boot-crudrepository-example)
 3. [Spring JPA dynamic query example](https://javadeveloperzone.com/spring/spring-jpa-dynamic-query-example/)
 4. [Simplification of Data Access Layer Implementation using JPA Specification](https://medium.com/monstar-lab-bangladesh-engineering/simplification-of-data-access-layer-implementation-using-jpa-specification-43dda2da485)
+
+## Validaciones
+1. [Using Bean Validation](https://docs.oracle.com/javaee/6/tutorial/doc/gircz.html) 
+2. [How would I specify a Hibernate “@Pattern” annotation using a regular expression from a .properties file or database](https://stackoverflow.com/questions/8994864/how-would-i-specify-a-hibernate-pattern-annotation-using-a-regular-expression)
+
+Ejemplo:
+```
+String dynamicPattern = ...;
+
+ConstraintMapping mapping = new ConstraintMapping();
+mapping.type( ContactInfo.class )
+    .property( "workPhone", FIELD )
+    .constraint( new PatternDef().regexp( dynamicPattern ) );
+
+HibernateValidatorConfiguration config = 
+    Validation.byProvider( HibernateValidator.class ).configure();
+config.addMapping( mapping );
+
+Validator validator = config.buildValidatorFactory().getValidator();
+```
