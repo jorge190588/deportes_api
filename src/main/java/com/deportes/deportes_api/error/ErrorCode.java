@@ -10,7 +10,8 @@ public enum ErrorCode {
 	REST_FIND(300,"Find registers"),
 	REST_CREATE(301,"Create a registrer"),
 	REST_UPDATE(302,"Update a registrer"),
-	REST_DELETE(303,"Delete a registrer");
+	REST_DELETE(303,"Delete a registrer"),
+	REST_VALIDATIONS(304,"Validations");
 	
 	
 	
