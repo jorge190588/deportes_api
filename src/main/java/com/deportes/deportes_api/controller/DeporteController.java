@@ -35,8 +35,8 @@ public class DeporteController<T> {
 		if (crud==null) crud = new CrudValidations(repository,"Deporte");
 	}
 	
-	@PostMapping("/save")
-	public RestResponse save(@RequestBody Deporte newDeporte) {
+	@PostMapping("")
+	public RestResponse create(@RequestBody Deporte newDeporte) {
 		logger.info("access to: POST /deporte/"+newDeporte);
 		instanceCrud();
 		return crud.create(newDeporte);
@@ -63,18 +63,18 @@ public class DeporteController<T> {
 		return crud.findById(id);
 	}
 	
-	@GetMapping("/findall")
+	@GetMapping("")
 	public RestResponse findall(@RequestParam("searchCriteria") Optional<String> searchCriteria,@RequestParam Optional<String> orderCriteria) {
 		logger.info("access to: GET /deporte/findall?searchCriteria="+searchCriteria+"&orderCriteria="+orderCriteria);
 		instanceCrud(); 
 		return crud.findAll(searchCriteria, orderCriteria);
 	}
 	
-	@GetMapping("/page/{pageNumber}/{pageSize}")
-	public  RestResponse  page(	@PathVariable int pageNumber,@PathVariable int pageSize,
+	@GetMapping("/{page}/{rows}")
+	public  RestResponse  page(	@PathVariable int page,@PathVariable int rows,
 			@RequestParam("searchCriteria") Optional<String> searchCriteria,@RequestParam Optional<String> orderCriteria) {
-		logger.info("access to: GET /deporte/page/"+pageNumber+"/"+pageSize+"?searchCriteria="+searchCriteria+"&orderCriteria="+orderCriteria);
+		logger.info("access to: GET /deporte/page/"+page+"/"+rows+"?searchCriteria="+searchCriteria+"&orderCriteria="+orderCriteria);
 		instanceCrud(); 
-		return crud.getPage(searchCriteria, orderCriteria, pageNumber, pageSize);
+		return crud.getPage(searchCriteria, orderCriteria, page, rows);
 	}
 }
