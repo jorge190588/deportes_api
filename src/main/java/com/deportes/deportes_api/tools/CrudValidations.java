@@ -61,12 +61,12 @@ public class CrudValidations {
 			genericClass.executeMethod();
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());	
 
-			response.set_data(genericClass.getResult());
+			response.setData(genericClass.getResult());
 						
 		}catch(Exception exception){
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_UPDATE,this.getClass().getSimpleName());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
-			response.set_error(_errorFormat.get_errorResponse());
+			response.setError(_errorFormat.get_errorResponse());
 		}
 		return response;
 	}
@@ -85,12 +85,12 @@ public class CrudValidations {
 			genericClass = new GenericClass(model,"save",newElement);
 			genericClass.executeMethod();
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
-			response.set_data(genericClass.getResult());
+			response.setData(genericClass.getResult());
 		}catch(Throwable exception){
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_CREATE,this.getClass().getSimpleName());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
 			response = new RestResponse();
-			response.set_error(_errorFormat.get_errorResponse());
+			response.setError(_errorFormat.get_errorResponse());
 		} 
 		return response;
 	}
@@ -116,11 +116,11 @@ public class CrudValidations {
 			genericClass = new GenericClass(model,"delete",listWithSpecificId.get(0));
 			genericClass.executeMethod();
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
-			response.set_data(genericClass.getResult());
+			response.setData(genericClass.getResult());
 		}catch(Throwable exception){
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_DELETE,this.getClass().getSimpleName());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
-			response.set_error(_errorFormat.get_errorResponse());
+			response.setError(_errorFormat.get_errorResponse());
 		} 
 		return response;
 	}
@@ -138,11 +138,11 @@ public class CrudValidations {
 			genericClass = new GenericClass(model,"findById",id);
 			genericClass.executeMethod();
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
-			response.set_data(genericClass.getResult());
+			response.setData(genericClass.getResult());
 		}catch(Throwable exception){
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_FIND,this.getClass().getSimpleName());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
-			response.set_error(_errorFormat.get_errorResponse());
+			response.setError(_errorFormat.get_errorResponse());
 		} 
 		return response;
 	}
@@ -157,11 +157,11 @@ public class CrudValidations {
 			genericClass = new GenericClass(model,"findAll",jpacustomSpecification.getSpecification(searchCriteriaArray,orderCriteriaArray ));
 			genericClass.executeMethod();
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
-			response.set_data(genericClass.getResult());
+			response.setData(genericClass.getResult());
 		}catch(Throwable exception){
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_FIND,this.getClass().getSimpleName());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
-			response.set_error(_errorFormat.get_errorResponse());
+			response.setError(_errorFormat.get_errorResponse());
 		} 
 		return response;
 	}
@@ -179,11 +179,11 @@ public class CrudValidations {
 			Page<?> page = (Page<?>) genericClass.getResult();
 			page.getTotalElements();
 		    page.getTotalPages();   
-			response.set_data(page);
+			response.setData(page);
 		}catch(Throwable exception){
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_FIND,this.getClass().getSimpleName());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
-			response.set_error(_errorFormat.get_errorResponse());
+			response.setError(_errorFormat.get_errorResponse());
 		} 
 		return response;
 	}

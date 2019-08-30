@@ -11,19 +11,19 @@ public class RestResponse<T> {
 	private T data;
 	private T error;
 	
-	public T get_data() {
+	public T getData() {
 		return data;
 	}
 
-	public void set_data(T data) {
+	public void setData(T data) {
 		this.data = data;
 	}
 	
-	public T get_error() {
+	public T getError() {
 		return error;
 	}
 	
-	public void set_error(T error) {
+	public void setError(T error) {
 		this.error= error;
 	}	
 }
