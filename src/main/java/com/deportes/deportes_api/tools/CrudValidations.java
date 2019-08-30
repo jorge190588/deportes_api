@@ -1,23 +1,24 @@
 package com.deportes.deportes_api.tools;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
+
+import org.codehaus.jettison.json.JSONArray;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import com.deportes.deportes_api.error.CustomException;
 import com.deportes.deportes_api.error.ErrorCode;
 import com.deportes.deportes_api.error.ErrorFormat;
 import com.deportes.deportes_api.generic.GenericClass;
 import com.deportes.deportes_api.generic.GenericValidations;
-import org.apache.commons.beanutils.PropertyUtils;
 
 @SuppressWarnings({"rawtypes","unchecked"})
 public class CrudValidations {
 	private Object model;
 	private String moduleName;
 	private GenericClass genericClass;
-
+	private JPAcustomSpecification jpacustomSpecification = new JPAcustomSpecification();
 	
 	public CrudValidations(Object _model,String _moduleName){
 		this.model=_model;
@@ -124,4 +125,66 @@ public class CrudValidations {
 		return response;
 	}
 	
+	public RestResponse findById(Integer id) {
+		RestResponse response = new RestResponse();
+		GenericValidations validations;
+		GenericClass genericClass;
+		try{
+			validations = new GenericValidations(moduleName);
+		
+			validations.checkIfParamIsNull(id,moduleName);
+			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
+		 
+			genericClass = new GenericClass(model,"findById",id);
+			genericClass.executeMethod();
+			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
+			response.set_data(genericClass.getResult());
+		}catch(Throwable exception){
+			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_FIND,this.getClass().getSimpleName());
+			ErrorFormat _errorFormat = new ErrorFormat(ex);
+			response.set_error(_errorFormat.get_errorResponse());
+		} 
+		return response;
+	}
+	
+	public RestResponse findAll(Optional<String> searchCriteria, Optional<String> orderCriteria) {
+		RestResponse response = new RestResponse();
+		GenericClass genericClass;
+		JSONArray searchCriteriaArray=null, orderCriteriaArray=null;
+		try{
+			if (!searchCriteria.isEmpty())	searchCriteriaArray = new JSONArray(searchCriteria.get());
+			if (!orderCriteria.isEmpty())	orderCriteriaArray = new JSONArray(orderCriteria.get());
+			genericClass = new GenericClass(model,"findAll",jpacustomSpecification.getSpecification(searchCriteriaArray,orderCriteriaArray ));
+			genericClass.executeMethod();
+			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
+			response.set_data(genericClass.getResult());
+		}catch(Throwable exception){
+			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_FIND,this.getClass().getSimpleName());
+			ErrorFormat _errorFormat = new ErrorFormat(ex);
+			response.set_error(_errorFormat.get_errorResponse());
+		} 
+		return response;
+	}
+	
+	public RestResponse getPage(Optional<String> searchCriteria, Optional<String> orderCriteria, int pageNumber, int pageSize) {
+		RestResponse response = new RestResponse();
+		GenericClass genericClass;
+		JSONArray searchCriteriaArray=null, orderCriteriaArray=null;
+		try{
+			if (!searchCriteria.isEmpty())	searchCriteriaArray = new JSONArray(searchCriteria.get());
+			if (!orderCriteria.isEmpty())	orderCriteriaArray = new JSONArray(orderCriteria.get());
+			genericClass = new GenericClass(model,"findAll",new Object []{jpacustomSpecification.getSpecification(searchCriteriaArray,orderCriteriaArray ),PageRequest.of(pageNumber, pageSize)});
+			genericClass.executeMethod();
+			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
+			Page<?> page = (Page<?>) genericClass.getResult();
+			page.getTotalElements();
+		    page.getTotalPages();   
+			response.set_data(page);
+		}catch(Throwable exception){
+			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_FIND,this.getClass().getSimpleName());
+			ErrorFormat _errorFormat = new ErrorFormat(ex);
+			response.set_error(_errorFormat.get_errorResponse());
+		} 
+		return response;
+	}
 }
