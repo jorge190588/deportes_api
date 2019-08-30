@@ -2,8 +2,9 @@ package com.deportes.deportes_api.generic;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Set;
-
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 @SuppressWarnings("rawtypes")
 public class GenericMethod<T> {
@@ -43,13 +44,14 @@ public class GenericMethod<T> {
 				method = genericClass.getClass().getMethod(this.name,paramList);
 			}else if (param instanceof Set<?>){
 				method = genericClass.getClass().getMethod(this.name,Set.class);
+			}else if (param instanceof Specification) {
+				method = genericClass.getClass().getMethod(this.name,Specification.class);	
 			}else if (param instanceof Object){
 				if (this.name=="update" || this.name=="save" || this.name=="delete"){
 					method = genericClass.getClass().getMethod(this.name,Object.class);
 				}else{
 					method = genericClass.getClass().getMethod(this.name,param.getClass());
 				}
-				
 			}
 		}catch(Exception exception){
 			this.method = null;
@@ -76,6 +78,12 @@ public class GenericMethod<T> {
 			params[index]=String.class;
 		}else if (param instanceof Date){
 			params[index]=Date.class;
+		}else if (param instanceof Specification) {
+			params[index]=Specification.class;
+		}else if (param instanceof PageRequest) {
+			params[index]=Pageable.class;
+		}else {
+			params[index]=Object.class;
 		}
 	}
 	

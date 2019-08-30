@@ -54,6 +54,7 @@ public class GenericClass<T> {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	private Object [] getParamsOfMethod(){
 		Object [] result=null;
 		if (this.param instanceof Object[]){
