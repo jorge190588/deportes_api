@@ -22,7 +22,9 @@ public class CrudValidations<T>   {
 	private String moduleName;
 	private GenericClass genericClass;
 	private JPAcustomSpecification jpacustomSpecification = new JPAcustomSpecification();
-	
+	private ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+	private javax.validation.Validator validator =  factory.getValidator();
+    
 	public CrudValidations(Object _model,String _moduleName){
 		this.model=_model;
 		this.moduleName=_moduleName;
@@ -37,6 +39,14 @@ public class CrudValidations<T>   {
 			validations.checkIfParamIsNull(updateElement,moduleName);
 			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
 			
+			Set<ConstraintViolation<Object>> errors = validator.validate(updateElement);
+		    if (errors != null && errors.size() != 0) {
+		    	CustomException ex = new CustomException("Error en las validaciones", ErrorCode.REST_CREATE, this.getClass().getSimpleName(), 0, errors);
+		    	ErrorFormat _errorFormat = new ErrorFormat(ex);
+				response.setError(_errorFormat.get_errorResponse());
+				return response;
+		    }
+			    
 			// set updatedAt attribute
 			validations.setUpdatedAtInElement(updateElement);
 			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
@@ -82,9 +92,6 @@ public class CrudValidations<T>   {
 			validations.checkIfParamIsNull(newElement,moduleName);
 			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
 			
-			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-		    javax.validation.Validator validator =  factory.getValidator();
-		   
 		    Set<ConstraintViolation<Object>> errors = validator.validate(newElement);
 		    if (errors != null && errors.size() != 0) {
 		    	CustomException ex = new CustomException("Error en las validaciones", ErrorCode.REST_CREATE, this.getClass().getSimpleName(), 0, errors);
