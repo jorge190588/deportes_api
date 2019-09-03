@@ -6,11 +6,15 @@ package com.deportes.deportes_api.error;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
 
 /**
  * @author jorge
  *
  */
+@SuppressWarnings("serial")
 public class CustomException extends Throwable  {
 	private int _code;
 	private String _title;
@@ -49,7 +53,22 @@ public class CustomException extends Throwable  {
 		this.set_messageList(null);
 	}
 	
-	
+	public CustomException(String message,  ErrorCode errorCode,String className, int lineNumber, Set<ConstraintViolation<Object>> errors) {
+		super(message);
+		this.set_className(className);
+		this.set_code(errorCode.get_code());
+		this.set_title(errorCode.get_title());
+		this.set_stackTrace(null);
+		this.set_lineNumber(lineNumber);
+		List<ErrorMessage> errorMessageList =  new ArrayList<ErrorMessage>();
+		for (ConstraintViolation<Object> constraintViolation : errors) {
+			 ErrorMessage messageElement = new ErrorMessage();
+			 messageElement.set_message(constraintViolation.getMessage());
+			 messageElement.set_methodName(constraintViolation.getPropertyPath().toString());
+			 errorMessageList.add(messageElement);
+		}
+		this.set_messageList(errorMessageList);
+	}
 
 	public List<ErrorMessage> getMessageList(Throwable throwable) {
 		List<ErrorMessage> errorMessageList =  new ArrayList<ErrorMessage>();

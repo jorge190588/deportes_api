@@ -20,7 +20,7 @@ import com.deportes.deportes_api.tools.DateTools;
 import com.deportes.deportes_api.tools.JPAcustomSpecification;
 import com.deportes.deportes_api.tools.RestResponse;
 
-@SuppressWarnings({"rawtypes"})
+@SuppressWarnings({"rawtypes","unchecked"})
 @RestController
 @RequestMapping("deporte")
 public class DeporteController<T> {

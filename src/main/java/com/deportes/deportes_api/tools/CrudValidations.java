@@ -2,11 +2,14 @@ package com.deportes.deportes_api.tools;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 import org.codehaus.jettison.json.JSONArray;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
 import com.deportes.deportes_api.error.CustomException;
 import com.deportes.deportes_api.error.ErrorCode;
 import com.deportes.deportes_api.error.ErrorFormat;
@@ -14,7 +17,7 @@ import com.deportes.deportes_api.generic.GenericClass;
 import com.deportes.deportes_api.generic.GenericValidations;
 
 @SuppressWarnings({"rawtypes","unchecked"})
-public class CrudValidations {
+public class CrudValidations<T>   {
 	private Object model;
 	private String moduleName;
 	private GenericClass genericClass;
@@ -79,6 +82,17 @@ public class CrudValidations {
 			validations.checkIfParamIsNull(newElement,moduleName);
 			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
 			
+			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		    javax.validation.Validator validator =  factory.getValidator();
+		   
+		    Set<ConstraintViolation<Object>> errors = validator.validate(newElement);
+		    if (errors != null && errors.size() != 0) {
+		    	CustomException ex = new CustomException("Error en las validaciones", ErrorCode.REST_CREATE, this.getClass().getSimpleName(), 0, errors);
+		    	ErrorFormat _errorFormat = new ErrorFormat(ex);
+				response.setError(_errorFormat.get_errorResponse());
+				return response;
+		    }
+		    
 			validations.setCreatedAtInElement(newElement);
 			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
 				
