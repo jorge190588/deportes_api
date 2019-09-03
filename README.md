@@ -103,6 +103,7 @@ Los articulo consultados para implementar JWT y OAuth 2 son los siguientes:
 ## Validaciones
 1. [Using Bean Validation](https://docs.oracle.com/javaee/6/tutorial/doc/gircz.html) 
 2. [How would I specify a Hibernate “@Pattern” annotation using a regular expression from a .properties file or database](https://stackoverflow.com/questions/8994864/how-would-i-specify-a-hibernate-pattern-annotation-using-a-regular-expression)
+3. [Java Code Examples for javax.validation.ConstraintViolation](https://www.programcreek.com/java-api-examples/javax.validation.ConstraintViolation)
 
 Ejemplo:
 ```
