@@ -50,8 +50,8 @@ public class DeporteController<T> {
 	}
 	
 	@PutMapping("/{id}")
-	public RestResponse update(@RequestBody Deporte updateElement, @PathVariable Integer id) {
-		logger.info("access to: PUT /deporte/"+id);
+	public RestResponse update(@RequestBody Deporte updateElement) {
+		logger.info("access to: PUT /deporte/"+updateElement.getId());
 		instanceCrud();
 		return crud.update(updateElement);
 	}
