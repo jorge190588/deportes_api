@@ -1,7 +1,6 @@
 package com.deportes.deportes_api.controller;
 
 import java.util.Optional;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.deportes.deportes_api.repositorios.DeporteRepositorio;
-import com.deportes.deportes_api.tablas.Deporte;
+import com.deportes.deportes_api.repositorios.DisciplinaRepositorio;
 import com.deportes.deportes_api.tablas.Disciplina;
 import com.deportes.deportes_api.tools.CrudValidations;
 import com.deportes.deportes_api.tools.DateTools;
@@ -23,11 +21,11 @@ import com.deportes.deportes_api.tools.RestResponse;
 
 @SuppressWarnings({"rawtypes","unchecked"})
 @RestController
-@RequestMapping("deporte")
-public class DeporteController<T> {
+@RequestMapping("disciplina")
+public class DisciplinaController {
 	@Autowired
-	DeporteRepositorio repository;
-	Logger logger = Logger.getLogger(DeporteController.class);
+	DisciplinaRepositorio repository;
+	Logger logger = Logger.getLogger(DisciplinaController.class);
 	JPAcustomSpecification jpacustomSpecification = new JPAcustomSpecification();
 	DateTools dateTools = new DateTools();
 	CrudValidations crud = null;
@@ -38,7 +36,7 @@ public class DeporteController<T> {
 	}
 	
 	@PostMapping("")
-	public RestResponse create(@RequestBody Deporte newElement) {
+	public RestResponse create(@RequestBody Disciplina newElement) {
 		logger.info("access to: POST /"+moduleName+"/"+newElement);
 		instanceCrud();
 		return crud.create(newElement);
@@ -52,7 +50,7 @@ public class DeporteController<T> {
 	}
 	
 	@PutMapping("/{id}")
-	public RestResponse update(@RequestBody Deporte updateElement) {
+	public RestResponse update(@RequestBody Disciplina updateElement) {
 		logger.info("access to: PUT /"+moduleName+"/"+updateElement.getId());
 		instanceCrud();
 		return crud.update(updateElement);
@@ -79,4 +77,5 @@ public class DeporteController<T> {
 		instanceCrud(); 
 		return crud.getPage(searchCriteria, orderCriteria, page, rows);
 	}
+
 }
