@@ -39,8 +39,6 @@ public class Disciplina {
     @JsonProperty("deporte_id")
     private Integer deporte_id;
     
-    
-    
     public Deporte getDeporte() {
 		return deporte;
 	}

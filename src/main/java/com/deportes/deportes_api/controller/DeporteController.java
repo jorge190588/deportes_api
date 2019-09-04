@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.deportes.deportes_api.repositorios.DeporteRepositorio;
 import com.deportes.deportes_api.tablas.Deporte;
-import com.deportes.deportes_api.tablas.Disciplina;
 import com.deportes.deportes_api.tools.CrudValidations;
 import com.deportes.deportes_api.tools.DateTools;
 import com.deportes.deportes_api.tools.JPAcustomSpecification;
