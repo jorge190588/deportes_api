@@ -57,13 +57,6 @@ public class GenericValidations<T> {
 						System.out.println("param name (ommit): "+paramName+", value "+paramValue);
 					}else{
 						PropertyUtils.setProperty(findedElement, paramName, paramValue);
-						/*genericClass= new GenericClass(findedElement,"set"+capitalizeString(paramName),(T) paramValue);
-						genericClass.executeMethod();
-						if (genericClass.getIsError()==true){
-							this.setIsError(true); 
-							this.setErrorMessage(genericClass.getErrorMessage());
-							return;
-						}*/
 					}
 				}
 				
