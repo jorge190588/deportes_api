@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.deportes.deportes_api.repositorios.DisciplinaRepositorio;
+import com.deportes.deportes_api.repositorios.ElementRepositorio;
 import com.deportes.deportes_api.tablas.Disciplina;
 import com.deportes.deportes_api.tools.CrudValidations;
 import com.deportes.deportes_api.tools.DateTools;
@@ -30,9 +31,11 @@ public class DisciplinaController {
 	DateTools dateTools = new DateTools();
 	CrudValidations crud = null;
 	private String moduleName="Disciplina";
+	@Autowired
+	ElementRepositorio elementRepository;
 	
 	private void instanceCrud() {
-		if (crud==null) crud = new CrudValidations(repository,moduleName);
+		if (crud==null) crud = new CrudValidations(repository,moduleName,elementRepository );
 	}
 	
 	@PostMapping("")

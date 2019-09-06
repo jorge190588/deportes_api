@@ -24,18 +24,21 @@ public class CrudValidations<T>   {
 	private JPAcustomSpecification jpacustomSpecification = new JPAcustomSpecification();
 	private ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	private javax.validation.Validator validator =  factory.getValidator();
+    private Object elementRepository;
+    private GenericValidations validations;
     
-	public CrudValidations(Object _model,String _moduleName){
+	public CrudValidations(Object _model,String _moduleName, Object _elementRepository){
 		this.model=_model;
 		this.moduleName=_moduleName;
+		this.elementRepository=_elementRepository;
+		this.validations = new GenericValidations(moduleName, _elementRepository);
 	}
 	
 	public RestResponse update(Object updateElement){
 		RestResponse response = new RestResponse();
-		GenericValidations validations; 
+		
 		GenericClass genericClass;
 		try {
-			validations = new GenericValidations(moduleName);
 			validations.checkIfParamIsNull(updateElement,moduleName);
 			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
 			
@@ -85,21 +88,24 @@ public class CrudValidations<T>   {
 	}
 	
 	public RestResponse create(Object newElement){
-		GenericValidations validations;
+		
 		RestResponse response= new RestResponse();
 		try{
-			validations = new GenericValidations(moduleName);
+			
 			validations.checkIfParamIsNull(newElement,moduleName);
 			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
 			
-		    Set<ConstraintViolation<Object>> errors = validator.validate(newElement);
+		    /*Set<ConstraintViolation<Object>> errors = validator.validate(newElement);
 		    if (errors != null && errors.size() != 0) {
 		    	CustomException ex = new CustomException("Error en las validaciones", ErrorCode.REST_CREATE, this.getClass().getSimpleName(), 0, errors);
 		    	ErrorFormat _errorFormat = new ErrorFormat(ex);
 				response.setError(_errorFormat.get_errorResponse());
 				return response;
-		    }
-		    
+		    }*/
+			
+			validations.validations(newElement);
+			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
+			
 			validations.setCreatedAtInElement(newElement);
 			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
 				
@@ -118,11 +124,10 @@ public class CrudValidations<T>   {
  
 	public RestResponse delete(String id){
 		RestResponse response = new RestResponse();
-		GenericValidations validations;
+		 
 		GenericClass genericClass;
 		try{
-			validations = new GenericValidations(moduleName);
-			
+			 
 			genericClass= new GenericClass(model,"getAll","id="+id);
 			genericClass.executeMethod();
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());
@@ -148,10 +153,10 @@ public class CrudValidations<T>   {
 	
 	public RestResponse findById(Integer id) {
 		RestResponse response = new RestResponse();
-		GenericValidations validations;
+		 
 		GenericClass genericClass;
 		try{
-			validations = new GenericValidations(moduleName);
+		 
 		
 			validations.checkIfParamIsNull(id,moduleName);
 			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());

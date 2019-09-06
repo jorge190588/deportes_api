@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.deportes.deportes_api.repositorios.ElementRepositorio;
 import com.deportes.deportes_api.repositorios.ElementTypeRepositorio;
 import com.deportes.deportes_api.tablas.ElementType;
 import com.deportes.deportes_api.tools.CrudValidations;
@@ -33,8 +34,11 @@ public class ElementTypeController <T> {
 	CrudValidations crud = null;
 	private String moduleName="ElementType";
 	
+	@Autowired
+	ElementRepositorio elementRepository;
+	
 	private void instanceCrud() {
-		if (crud==null) crud = new CrudValidations(repository,moduleName);
+		if (crud==null) crud = new CrudValidations(repository,moduleName,elementRepository );
 	}
 	
 	@PostMapping("")

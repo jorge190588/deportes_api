@@ -32,8 +32,11 @@ public class ElementController<T> {
 	CrudValidations crud = null;
 	private String moduleName="Element";
 	
+	@Autowired
+	ElementRepositorio elementRepository;
+	
 	private void instanceCrud() {
-		if (crud==null) crud = new CrudValidations(repository,moduleName);
+		if (crud==null) crud = new CrudValidations(repository,moduleName,elementRepository );
 	}
 	
 	@PostMapping("")

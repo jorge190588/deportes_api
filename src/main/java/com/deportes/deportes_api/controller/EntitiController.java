@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.deportes.deportes_api.repositorios.ElementRepositorio;
 import com.deportes.deportes_api.repositorios.EntitiRepositorio;
 import com.deportes.deportes_api.tablas.Entiti;
 import com.deportes.deportes_api.tools.CrudValidations;
@@ -32,8 +34,11 @@ public class EntitiController  <T> {
 	CrudValidations crud = null;
 	private String moduleName="Entiti";
 	
+	@Autowired
+	ElementRepositorio elementRepository;
+	
 	private void instanceCrud() {
-		if (crud==null) crud = new CrudValidations(repository,moduleName);
+		if (crud==null) crud = new CrudValidations(repository,moduleName,elementRepository );
 	}
 	
 	@PostMapping("")
