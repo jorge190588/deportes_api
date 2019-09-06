@@ -5,16 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
-import com.deportes.deportes_api.repositorios.DeporteRepositorio;
+import com.deportes.deportes_api.repositorios.ElementRepositorio;
+
 
 @SuppressWarnings({"rawtypes","unused"})
 @Component
-public class DeporteCargador implements ApplicationListener<ContextRefreshedEvent>  {
-	private DeporteRepositorio repository;
+public class ElementCargador implements ApplicationListener<ContextRefreshedEvent>  {
+	private ElementRepositorio repository;
 	private Logger log = Logger.getLogger(this.getClass());
 	
     @Autowired
-    public void setRepository(DeporteRepositorio repository) {
+    public void setRepository(ElementRepositorio repository) {
         this.repository = repository;
     }
     

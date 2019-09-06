@@ -1,11 +1,33 @@
-package com.deportes.deportes_api.validations;
+package com.deportes.deportes_api.tablas;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+@Entity
+@Table(name="element")
 public class Element {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private ElementType elementType;
-	private Entiti entiti;
+	@Version
+	private int version;
+	
+	@ManyToOne
+    @JoinColumn(name="elementType_id", insertable=false, updatable=false)
+    private ElementType elementType; 
+	
+	@ManyToOne
+    @JoinColumn(name="entiti_id", insertable=false, updatable=false)
+    private Entiti entiti; 
+	
 	private String idelement;
 	private String label;
 	private Boolean isRequired;
@@ -20,6 +42,16 @@ public class Element {
 	private Date updatedAt;
 	private String mask;
 	private String maskProperty;
+	
+	public int getVersion() {
+		return version;
+	}
+	public void setVersion(int version) {
+		this.version = version;
+	}
+	
+	 
+	
 	public int getId() {
 		return id;
 	}

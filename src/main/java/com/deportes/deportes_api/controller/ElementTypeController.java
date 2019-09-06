@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.deportes.deportes_api.repositorios.DeporteRepositorio;
-import com.deportes.deportes_api.tablas.Deporte;
+
+import com.deportes.deportes_api.repositorios.ElementTypeRepositorio;
+import com.deportes.deportes_api.tablas.ElementType;
 import com.deportes.deportes_api.tools.CrudValidations;
 import com.deportes.deportes_api.tools.DateTools;
 import com.deportes.deportes_api.tools.JPAcustomSpecification;
@@ -22,22 +23,22 @@ import com.deportes.deportes_api.tools.RestResponse;
 
 @SuppressWarnings({"rawtypes","unchecked"})
 @RestController
-@RequestMapping("deporte")
-public class DeporteController<T> {
+@RequestMapping("elementType")
+public class ElementTypeController <T> {
 	@Autowired
-	DeporteRepositorio repository;
+	ElementTypeRepositorio repository;
 	Logger logger = Logger.getLogger(this.getClass());
 	JPAcustomSpecification jpacustomSpecification = new JPAcustomSpecification();
 	DateTools dateTools = new DateTools();
 	CrudValidations crud = null;
-	private String moduleName="Deporte";
+	private String moduleName="ElementType";
 	
 	private void instanceCrud() {
 		if (crud==null) crud = new CrudValidations(repository,moduleName);
 	}
 	
 	@PostMapping("")
-	public RestResponse create(@RequestBody Deporte newElement) {
+	public RestResponse create(@RequestBody ElementType newElement) {
 		logger.info("access to: POST /"+moduleName+"/"+newElement);
 		instanceCrud();
 		return crud.create(newElement);
@@ -51,7 +52,7 @@ public class DeporteController<T> {
 	}
 	
 	@PutMapping("/{id}")
-	public RestResponse update(@RequestBody Deporte updateElement) {
+	public RestResponse update(@RequestBody ElementType updateElement) {
 		logger.info("access to: PUT /"+moduleName+"/"+updateElement.getId());
 		instanceCrud();
 		return crud.update(updateElement);
