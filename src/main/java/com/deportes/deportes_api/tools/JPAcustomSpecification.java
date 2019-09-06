@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -84,36 +85,73 @@ public class JPAcustomSpecification<T> {
     	Predicate predicate = null;
     	switch (option) {
         case "Igual":
-        	predicate= criteriaBuilder.and(criteriaBuilder.equal(root.get(attribute), value));
+        	predicate= criteriaBuilder.and(criteriaBuilder.equal(getAtribute(attribute, root, "String"), value));
             break;
         case "Contiene":
-        	predicate=criteriaBuilder.and(criteriaBuilder.like(root.<String>get(attribute), "%"+value+"%"));
+        	predicate=criteriaBuilder.and(criteriaBuilder.like((Expression<String>) getAtribute(attribute, root, "String"), "%"+value+"%"));
         	break;
         case "Inicia":
-        	predicate=criteriaBuilder.and(criteriaBuilder.like(root.<String>get(attribute), "%"+value));
+        	predicate=criteriaBuilder.and(criteriaBuilder.like((Expression<String>) getAtribute(attribute, root, "String"), "%"+value));
         	break;
         case "Finaliza":
-        	predicate=criteriaBuilder.and(criteriaBuilder.like(root.<String>get(attribute), value+"%"));
+        	predicate=criteriaBuilder.and(criteriaBuilder.like((Expression<String>) getAtribute(attribute, root, "String"), value+"%"));
         	break;
         case "Mayor":
-        	predicate= criteriaBuilder.and(criteriaBuilder.greaterThan(root.<Integer>get(attribute), Integer.valueOf(value) ));
+        	predicate= criteriaBuilder.and(criteriaBuilder.greaterThan((Expression<Integer>) getAtribute(attribute, root, "Double"), Integer.valueOf(value) ));
         	break;
         case "MayorIgual":
-        	predicate= criteriaBuilder.and(criteriaBuilder.greaterThanOrEqualTo(root.<Integer>get(attribute), Integer.valueOf(value) ));
+        	predicate= criteriaBuilder.and(criteriaBuilder.greaterThanOrEqualTo((Expression<Integer>) getAtribute(attribute, root, "Double"), Integer.valueOf(value) ));
         	break;
         case "Menor":
-        	predicate= criteriaBuilder.and(criteriaBuilder.lessThan(root.<Integer>get(attribute), Integer.valueOf(value) ));
+        	predicate= criteriaBuilder.and(criteriaBuilder.lessThan((Expression<Integer>) getAtribute(attribute, root, "Double"), Integer.valueOf(value) ));
         	break;
         case "MenorIgual":
-        	predicate= criteriaBuilder.and(criteriaBuilder.lessThanOrEqualTo(root.<Integer>get(attribute), Integer.valueOf(value) ));
+        	predicate= criteriaBuilder.and(criteriaBuilder.lessThanOrEqualTo((Expression<Integer>) getAtribute(attribute, root, "Double"), Integer.valueOf(value) ));
         	break;
         default:
-        	predicate= criteriaBuilder.and(criteriaBuilder.equal(root.get(attribute), value));
+        	predicate= criteriaBuilder.and(criteriaBuilder.equal(getAtribute(attribute, root, "String"), value));
             logger.error("Error: Invalid Option: "+option.toString());
             break;
 	    }
     	return predicate;
     }
     
-
+    private Expression<?> getAtribute(String attribute, Root<?> root, String type ) {
+    	String[] parts = attribute.split("[.]");
+    	if (parts.length==0) return root;
+    	
+    	if (type=="String") {
+    		if  (parts.length==1) return root.<String>get(attribute);
+    		else if (parts.length==2) return root.<String>get(parts[0]).get(parts[1]);
+    		else if (parts.length==3) return root.<String>get(parts[0]).<String>get(parts[1]).<String>get(parts[2]);
+    		else return root;
+    	}if (type=="Integer") {
+    		if  (parts.length==1) return root.<String>get(attribute);
+    		else if (parts.length==2) return root.<String>get(parts[0]).get(parts[1]);
+    		else if (parts.length==3) return root.<Integer>get(parts[0]).<Integer>get(parts[1]).<Integer>get(parts[2]);
+    		else return root;
+    	}else return root;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
