@@ -1,53 +1,50 @@
 package com.deportes.deportes_api.error;
 
 public class ErrorMessage {
-	private String _message;
-	private int _line;
-	private String _methodName;
-	private String _fileName; 
-	private String _className;
+	private String message;
+	private int line;
+	private String methodName;
+	private String fileName; 
+	private String className;
+	private String attribute;
 	
-	//public ErrorMessage(){}
-
-	public String get_message() {
-		return _message;
+	public int getLine() {
+		return line;
 	}
-
-	public void set_message(String _message) {
-		this._message = _message;
+	public void setLine(int line) {
+		this.line = line;
 	}
-
-	public int get_line() {
-		return _line;
+	public String getMethodName() {
+		return methodName;
 	}
-
-	public void set_line(int _line) {
-		this._line = _line;
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
 	}
-
-	public String get_methodName() {
-		return _methodName;
+	public String getFileName() {
+		return fileName;
 	}
-
-	public void set_methodName(String _methodName) {
-		this._methodName = _methodName;
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
-
-	public String get_fileName() {
-		return _fileName;
+	public String getClassName() {
+		return className;
 	}
-
-	public void set_fileName(String _fileName) {
-		this._fileName = _fileName;
+	public void setClassName(String className) {
+		this.className = className;
 	}
-
-	public String get_className() {
-		return _className;
+	public String getAttribute() {
+		return attribute;
 	}
-
-	public void set_className(String _className) {
-		this._className = _className;
+	public void setAttribute(String attribute) {
+		this.attribute = attribute;
 	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
 	
 	
 }

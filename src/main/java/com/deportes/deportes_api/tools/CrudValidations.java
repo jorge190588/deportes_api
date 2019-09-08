@@ -40,7 +40,6 @@ public class CrudValidations<T>   {
 		GenericClass genericClass;
 		try {
 			validations.checkIfParamIsNull(updateElement,moduleName);
-			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
 			
 			Set<ConstraintViolation<Object>> errors = validator.validate(updateElement);
 		    if (errors != null && errors.size() != 0) {
@@ -50,10 +49,7 @@ public class CrudValidations<T>   {
 				return response;
 		    }
 			    
-			// set updatedAt attribute
 			validations.setUpdatedAtInElement(updateElement);
-			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
-
 			
 			// check list
 			genericClass= new GenericClass(updateElement,"getId");
@@ -71,7 +67,6 @@ public class CrudValidations<T>   {
 			
 			// set parameters
 			validations.setParametersValuesToElement(findedElement,updateElement);
-			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
 			
 			genericClass = new GenericClass(model,"save",findedElement);
 			genericClass.executeMethod();
@@ -79,7 +74,7 @@ public class CrudValidations<T>   {
 
 			response.setData(genericClass.getResult());
 						
-		}catch(Exception exception){
+		}catch(Throwable exception ){
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_UPDATE,this.getClass().getSimpleName());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
 			response.setError(_errorFormat.get_errorResponse());
@@ -87,14 +82,13 @@ public class CrudValidations<T>   {
 		return response;
 	}
 	
-	public RestResponse create(Object newElement){
+	public RestResponse create(Object newElement, Object repository) {
 		
-		RestResponse response= new RestResponse();
+		RestResponse response= new RestResponse() ;
 		try{
 			
 			validations.checkIfParamIsNull(newElement,moduleName);
-			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
-			
+		
 		    /*Set<ConstraintViolation<Object>> errors = validator.validate(newElement);
 		    if (errors != null && errors.size() != 0) {
 		    	CustomException ex = new CustomException("Error en las validaciones", ErrorCode.REST_CREATE, this.getClass().getSimpleName(), 0, errors);
@@ -103,22 +97,25 @@ public class CrudValidations<T>   {
 				return response;
 		    }*/
 			
-			validations.validations(newElement);
-			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
+			validations.validations(newElement, repository);
 			
 			validations.setCreatedAtInElement(newElement);
-			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
 				
 			genericClass = new GenericClass(model,"save",newElement);
 			genericClass.executeMethod();
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
 			response.setData(genericClass.getResult());
-		}catch(Throwable exception){
-			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_CREATE,this.getClass().getSimpleName());
+		}catch(CustomException exception){
+			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_CREATE,this.getClass().getSimpleName(),exception.getMessageList());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
 			response = new RestResponse();
 			response.setError(_errorFormat.get_errorResponse());
-		} 
+		}catch(Throwable exception ) {
+			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_CREATE,this.getClass().getSimpleName());
+			ErrorFormat errorFormat = new ErrorFormat(ex);
+			response = new RestResponse();
+			response.setError(errorFormat.get_errorResponse());
+		}
 		return response;
 	}
  
@@ -134,10 +131,7 @@ public class CrudValidations<T>   {
 			List<?> listWithSpecificId = (List<?>) genericClass.getResult(); 
 			
 			validations.checkIfParamIsNull(listWithSpecificId,moduleName);
-			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
-			
 			validations.checkIfListHasElements(listWithSpecificId);
-			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
 			
 			genericClass = new GenericClass(model,"delete",listWithSpecificId.get(0));
 			genericClass.executeMethod();
@@ -159,8 +153,7 @@ public class CrudValidations<T>   {
 		 
 		
 			validations.checkIfParamIsNull(id,moduleName);
-			if (validations.getIsError()==true) throw new Exception(validations.getErrorMessage());
-		 
+			
 			genericClass = new GenericClass(model,"findById",id);
 			genericClass.executeMethod();
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
@@ -180,6 +173,25 @@ public class CrudValidations<T>   {
 		try{
 			if (!searchCriteria.isEmpty())	searchCriteriaArray = new JSONArray(searchCriteria.get());
 			if (!orderCriteria.isEmpty())	orderCriteriaArray = new JSONArray(orderCriteria.get());
+			genericClass = new GenericClass(model,"findAll",jpacustomSpecification.getSpecification(searchCriteriaArray,orderCriteriaArray ));
+			genericClass.executeMethod();
+			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
+			response.setData(genericClass.getResult());
+		}catch(Throwable exception){
+			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_FIND,this.getClass().getSimpleName());
+			ErrorFormat _errorFormat = new ErrorFormat(ex);
+			response.setError(_errorFormat.get_errorResponse());
+		} 
+		return response;
+	}
+	
+	public RestResponse findAllE(java.util.Optional searchCriteria, java.util.Optional orderCriteria) {
+		RestResponse response = new RestResponse();
+		GenericClass genericClass;
+		JSONArray searchCriteriaArray=null, orderCriteriaArray=null;
+		try{
+			if (!searchCriteria.isEmpty())	searchCriteriaArray = new JSONArray(searchCriteria.get().toString());
+			if (!orderCriteria.isEmpty())	orderCriteriaArray = new JSONArray(orderCriteria.get().toString());
 			genericClass = new GenericClass(model,"findAll",jpacustomSpecification.getSpecification(searchCriteriaArray,orderCriteriaArray ));
 			genericClass.executeMethod();
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			

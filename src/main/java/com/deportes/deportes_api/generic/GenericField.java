@@ -5,7 +5,7 @@ public class GenericField<T> {
 	private Boolean isError=false;
 	private String errorMessage;
 	private Object genericClass;
-	private Object attribute;
+	private String attribute;
 	private Object value;
 	
 	public GenericField(Object _genericClass){
@@ -44,20 +44,21 @@ public class GenericField<T> {
 	}
 
 	public void setAttribute(String attribute) {
-		try{
-			java.lang.reflect.Field field = this.genericClass.getClass().getDeclaredField(attribute);
-		     field.setAccessible(true);
-		     Object value = field.get(this.genericClass.getClass());
-		     this.attribute = value;	
-		}catch(Exception exception){
-			this.attribute=null;
-			this.setIsError(true);
-			this.setErrorMessage("Error to set "+this.attribute+" attribute");
-		}
+		this.attribute=attribute;
 	     
 	}
 
 	public Object getValue() {
+		try{
+			java.lang.reflect.Field field = this.genericClass.getClass().getDeclaredField(this.attribute);
+		     field.setAccessible(true);
+		     this.value= field.get(this.genericClass);
+		}catch(Exception exception){
+			this.value=null;
+			this.setIsError(true);
+			this.setErrorMessage("Error to set "+this.attribute+" attribute");
+		}
+		
 		return value;
 	}
 

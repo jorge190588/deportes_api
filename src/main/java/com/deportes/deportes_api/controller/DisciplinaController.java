@@ -42,7 +42,7 @@ public class DisciplinaController {
 	public RestResponse create(@RequestBody Disciplina newElement) {
 		logger.info("access to: POST /"+moduleName+"/"+newElement);
 		instanceCrud();
-		return crud.create(newElement);
+		return crud.create(newElement, repository);
 	}
 	
 	@DeleteMapping("/{id}")

@@ -6,6 +6,7 @@ import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name="deporte")
+
 public class Deporte {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +17,7 @@ public class Deporte {
     private String nombre;
     
     @Pattern(regexp = "([a-zA-Z0-9]{10})",message="El código debe tener 10 caracteres")
-    @Column(name="codigo", unique=true)
+    @Column(name="codigo")
     private String codigo;
     
     private Date createdAt;

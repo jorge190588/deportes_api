@@ -1,7 +1,10 @@
 package com.deportes.deportes_api.generic;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +12,9 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.deportes.deportes_api.error.CustomException;
+import com.deportes.deportes_api.error.ErrorCode;
+import com.deportes.deportes_api.error.ErrorMessage;
 import com.deportes.deportes_api.repositorios.ElementRepositorio;
 import com.deportes.deportes_api.tablas.Entiti;
 import com.deportes.deportes_api.tablas.Element;
@@ -42,20 +48,16 @@ public class GenericValidations<T> {
 	}
 	
 	
-	public void checkIfParamIsNull(T param,String name){
-		if (param==null){
-			this.setIsError(true);
-			this.setErrorMessage(name+" es nulo");
-		}else{
-			this.setIsError(false);
-		}
+	public void checkIfParamIsNull(T param,String name) throws CustomException{
+		if (param==null)
+			throw new CustomException(name+" es nulo",ErrorCode.REST_CREATE, this.getClass().getSimpleName().toString() , null);
 	}
 	
-	public void setParametersValuesToElement(Object findedElement, Object _paramsClass){
+	public void setParametersValuesToElement(Object findedElement, Object _paramsClass) throws CustomException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
 		String paramName="",methodName;
 		Object paramValue;
 		GenericClass genericClass;
-		try{
+		
 			for(Field param: _paramsClass.getClass().getDeclaredFields()){
 				
 				paramName=param.getName();
@@ -63,12 +65,9 @@ public class GenericValidations<T> {
 					methodName="get"+capitalizeString(paramName);
 					genericClass= new GenericClass(_paramsClass,methodName);
 					genericClass.executeMethod();
-					if (genericClass.getIsError()==true){
-						this.setIsError(true); 
-						this.setErrorMessage(genericClass.getErrorMessage());
-						return;
-					}	
-					
+					if (genericClass.getIsError()==true)
+						throw new CustomException("Error en la asignación de datos para crear un elemento",ErrorCode.REST_CREATE, this.getClass().getSimpleName().toString() , null);
+						
 					paramValue = genericClass.getResult();
 					
 					if (paramName.equals("createdAt") || paramName.equals("id")){
@@ -80,96 +79,71 @@ public class GenericValidations<T> {
 				
 				
 			}
-		}catch(Exception exception){
-			this.setIsError(true);
-			this.setErrorMessage("Error al asignar los valores de parametro "+exception.getMessage());
-		}
 	}
 	
 
-	public void setUpdatedAtInElement(Object _class){
+	public void setUpdatedAtInElement(Object _class) throws CustomException{
 		String setMethodName="setUpdatedAt",getMethodName="getUpdatedAt";
 		GenericClass genericClass= new GenericClass(_class,getMethodName);
 		genericClass.executeMethod();
-		if (genericClass.getIsError()==true){
-			this.setIsError(true); 
-			this.setErrorMessage(genericClass.getErrorMessage());
-			return;
-		}
+		if (genericClass.getIsError()==true)
+			throw new CustomException("Error al asignar la fecha de modificación",ErrorCode.REST_CREATE, this.getClass().getSimpleName().toString() , null);
 		
 		Object beforeDate= genericClass.getResult();
 
 		// set new data in updatedAt attribute
 		genericClass = new GenericClass(_class,setMethodName,(T) dateTools.get_CurrentDate());
 		genericClass.executeMethod();
-		if (genericClass.getIsError()==true){
-			this.setIsError(true); 
-			this.setErrorMessage(genericClass.getErrorMessage());
-			return;
-		}
+		if (genericClass.getIsError()==true)
+			throw new CustomException("Error al asignar la fecha de modificación",ErrorCode.REST_CREATE, this.getClass().getSimpleName().toString() , null);
 		
 		// get updatedAt attribute
 		genericClass =new GenericClass(_class,getMethodName);
 		genericClass.executeMethod();
-		if (genericClass.getIsError()==true){
-			this.setIsError(true); 
-			this.setErrorMessage(genericClass.getErrorMessage());
-			return;
-		}
+		if (genericClass.getIsError()==true)
+			throw new CustomException("Error al asignar la fecha de modificación",ErrorCode.REST_CREATE, this.getClass().getSimpleName().toString() , null);
+		
 		Object result= genericClass.getResult();
-		if (result==null){
-			this.setIsError(true);
-			this.setErrorMessage("Error al asignar la fecha de actualizacion en el modulo "+moduleName);
-		}
-		if (result==beforeDate){
-			this.setIsError(true);
-			this.setErrorMessage("La fecha de actualizacion actual y anterior son las mismas en el modulo "+moduleName);
-		}
+		if (result==null)
+			throw new CustomException("Error al asignar la fecha de modificación",ErrorCode.REST_CREATE, this.getClass().getSimpleName().toString() , null);
+		
+		if (result==beforeDate)
+			throw new CustomException("La fecha de actualizacion actual y anterior son las mismas",ErrorCode.REST_CREATE, this.getClass().getSimpleName().toString() , null);
+			
 	}
 	
-	public void setCreatedAtInElement(Object _class){
+	public void setCreatedAtInElement(Object _class) throws CustomException{
 		String setMethodName="setCreatedAt",getMethodName="getCreatedAt";
 		
 		genericClass= new GenericClass(_class,setMethodName,(T) dateTools.get_CurrentDate());
 		genericClass.executeMethod();
-		if (genericClass.getIsError()==true){
-			this.setIsError(true); 
-			this.setErrorMessage(genericClass.getErrorMessage());
-			return;
-		}
+		if (genericClass.getIsError()==true)
+			throw new CustomException("Error al asignar la fecha de creación",ErrorCode.REST_CREATE, this.getClass().getSimpleName().toString() , null);
 		
 		genericClass= new GenericClass(_class,getMethodName);
 		genericClass.executeMethod();
-		if (genericClass.getIsError()==true){
-			this.setIsError(true); 
-			this.setErrorMessage(genericClass.getErrorMessage());
-			return;
-		}
+		if (genericClass.getIsError()==true)
+			throw new CustomException("Error al asignar la fecha de creación",ErrorCode.REST_CREATE, this.getClass().getSimpleName().toString() , null);
 		
-		if (genericClass.getResult()==null){
-			this.setIsError(true);
-			this.setErrorMessage("Error al ejecutar "+setMethodName+" en "+moduleName);
-		}
+		
+		if (genericClass.getResult()==null)	
+			throw new CustomException("Error al asignar la fecha de creación",ErrorCode.REST_CREATE, this.getClass().getSimpleName().toString() , null);
+		
 	}
 	
-	public void checkIfListHasElements(List<T> list){
-		if (list.size()==0){
-			this.setIsError(true);
-			this.setErrorMessage(this.moduleName+" no tiene elementos");
-		}
+	public void checkIfListHasElements(List<T> list) throws CustomException{
+		if (list.size()==0)	throw new CustomException("Requiere un elemento",ErrorCode.REST_CREATE, this.getClass().getSimpleName().toString() , null);			
 	}
 	
-	public void validations(Object _class) {
+	public void validations(Object _class, Object repository) throws CustomException, NoSuchFieldException, SecurityException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		instanceCrud();
-		Entiti entiti = null;
-		Optional<String> searchFilter =  Optional.of("[{\"id\":\"entiti.name\",\"option\":\"Igual\",\"value\":\"deporte\"}]");
+		Optional<String> searchFilter =  Optional.of("[{\"id\":\"entiti.name\",\"option\":\"Igual\",\"value\":\""+ this.moduleName + "\"}]");
 		Optional<String> orderFilter =  Optional.empty();
-		
 		RestResponse response  = elementCrud.findAll(searchFilter, orderFilter);
 		List<Element> listOfElements = (List<Element>) response.getData();
-		String idElement="", methodName="",message="",pattern="";
-		int errorCounter=0;
+		String idElement="", methodName="", pattern="";
 		Boolean matches=false;
+		List<ErrorMessage> errorMessageList =  new ArrayList<ErrorMessage>();
 		
 		for(Element element: listOfElements){
 			
@@ -178,16 +152,18 @@ public class GenericValidations<T> {
 			genericClass = new GenericClass(_class,methodName);
 			genericClass.executeMethod();
 			if (genericClass.getIsError()==true){
-				this.setIsError(true); 
-				this.setErrorMessage(genericClass.getErrorMessage());
+				ErrorMessage patternError = new ErrorMessage();
+				patternError.setMessage("Error al obtener el atributo");
+				patternError.setAttribute(element.getLabel());
+				errorMessageList.add(patternError);
 				return;
 			}	
 			
 			if (genericClass.getResult()==null){
-				this.setIsError(true);
-				if(errorCounter>0) message+=", "; 
-				message+=idElement;
-				errorCounter++;
+				ErrorMessage patternError = new ErrorMessage();
+				patternError.setMessage(element.getPatternMessage());
+				patternError.setAttribute(element.getLabel());
+				errorMessageList.add(patternError);
 			}else{
 				pattern= element.getPattern();
 				if (genericClass.getResult() instanceof BigDecimal)
@@ -195,35 +171,37 @@ public class GenericValidations<T> {
 				else
 					matches= genericClass.getResult().toString().matches(pattern);
 				if (matches==false){
-					this.setIsError(true);
-					if(errorCounter>0) message+=", ";
-					message+=idElement+"("+element.getPattern()+") con el formato "+element.getPatternMessage(); 
-					errorCounter++;	
+					ErrorMessage patternError = new ErrorMessage();
+					patternError.setMessage(element.getPatternMessage());
+					patternError.setAttribute(element.getLabel());
+					errorMessageList.add(patternError);
+				}
+			}
+			
+			searchFilter= Optional.of("[{\"id\":\""+element.getIdelement()+"\",\"option\":\"Igual\",\"value\":\""+ PropertyUtils.getProperty(_class, element.getIdelement()) + "\"}]");
+			
+			genericClass= new GenericClass(repository,"findAllE",new Object [] {searchFilter,orderFilter});
+			genericClass.executeMethod();
+			if (genericClass.getIsError()==true){
+				ErrorMessage patternError = new ErrorMessage();
+				patternError.setMessage("Error al obtener el atributo");
+				patternError.setAttribute(element.getLabel());
+				errorMessageList.add(patternError);
+			}else {
+				RestResponse responseFindAll = ( RestResponse) genericClass.getResult();
+				List<Object> responseObject=(List<Object>) responseFindAll.getData();
+				if (responseObject.size()>0) {
+					ErrorMessage patternError = new ErrorMessage();
+					patternError.setMessage("El valor esta duplicado");
+					patternError.setAttribute(element.getLabel());
+					errorMessageList.add(patternError);
 				}
 			}
 		}
 		
-		if (errorCounter==1) this.setErrorMessage("el parametro "+message+" es requerido");
-		else if (errorCounter>1) this.setErrorMessage("los parametros "+message+" son requeridos");
+		if (errorMessageList.size()>0) {
+			throw new CustomException("Error en las validaciones",ErrorCode.REST_CREATE, this.getClass().getSimpleName().toString() , errorMessageList);
+		}
 	}
-	
-	 
-	
-	public Boolean getIsError() {
-		return isError;
-	}
-
-	public void setIsError(Boolean isError) {
-		this.isError = isError;
-	}
-
-	public String getErrorMessage() {
-		return errorMessage;
-	}
-
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
-	}
-	 
 		
 }

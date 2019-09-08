@@ -43,7 +43,7 @@ public class DeporteController<T> {
 	public RestResponse create(@RequestBody Deporte newElement) {
 		logger.info("access to: POST /"+moduleName+"/"+newElement);
 		instanceCrud();
-		return crud.create(newElement);
+		return crud.create(newElement, crud);
 	}
 	
 	@DeleteMapping("/{id}")

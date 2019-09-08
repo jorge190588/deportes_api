@@ -42,6 +42,8 @@ public class GenericMethod<T> {
 			}else if (param instanceof Object[]){
 				Class paramList [] = convertParamsToClass(param);
 				method = genericClass.getClass().getMethod(this.name,paramList);
+			}else if (param instanceof java.util.Optional[]){
+				method = genericClass.getClass().getMethod(this.name,(Class<?>[]) param);
 			}else if (param instanceof Set<?>){
 				method = genericClass.getClass().getMethod(this.name,Set.class);
 			}else if (param instanceof Specification) {
@@ -82,6 +84,8 @@ public class GenericMethod<T> {
 			params[index]=Specification.class;
 		}else if (param instanceof PageRequest) {
 			params[index]=Pageable.class;
+		}else if (param instanceof java.util.Optional) {
+			params[index]=java.util.Optional.class;
 		}else {
 			params[index]=Object.class;
 		}
