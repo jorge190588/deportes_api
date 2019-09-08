@@ -45,7 +45,7 @@ public class EntitiController  <T> {
 	public RestResponse create(@RequestBody Entiti newElement) {
 		logger.info("access to: POST /"+moduleName+"/"+newElement);
 		instanceCrud();
-		return crud.create(newElement, repository);
+		return crud.create(newElement);
 	}
 	
 	@DeleteMapping("/{id}")

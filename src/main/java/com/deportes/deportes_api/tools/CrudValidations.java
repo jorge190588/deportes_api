@@ -82,7 +82,7 @@ public class CrudValidations<T>   {
 		return response;
 	}
 	
-	public RestResponse create(Object newElement, Object repository) {
+	public RestResponse create(Object newElement) {
 		
 		RestResponse response= new RestResponse() ;
 		try{
@@ -97,7 +97,7 @@ public class CrudValidations<T>   {
 				return response;
 		    }*/
 			
-			validations.validations(newElement, repository);
+			validations.validations(newElement, this);
 			
 			validations.setCreatedAtInElement(newElement);
 				

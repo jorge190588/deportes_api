@@ -180,7 +180,7 @@ public class GenericValidations<T> {
 			
 			searchFilter= Optional.of("[{\"id\":\""+element.getIdelement()+"\",\"option\":\"Igual\",\"value\":\""+ PropertyUtils.getProperty(_class, element.getIdelement()) + "\"}]");
 			
-			genericClass= new GenericClass(repository,"findAllE",new Object [] {searchFilter,orderFilter});
+			genericClass= new GenericClass(repository,"findAll",new Object [] {searchFilter,orderFilter});
 			genericClass.executeMethod();
 			if (genericClass.getIsError()==true){
 				ErrorMessage patternError = new ErrorMessage();

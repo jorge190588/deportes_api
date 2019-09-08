@@ -45,7 +45,7 @@ public class ElementTypeController <T> {
 	public RestResponse create(@RequestBody ElementType newElement) {
 		logger.info("access to: POST /"+moduleName+"/"+newElement);
 		instanceCrud();
-		return crud.create(newElement, repository);
+		return crud.create(newElement);
 	}
 	
 	@DeleteMapping("/{id}")
