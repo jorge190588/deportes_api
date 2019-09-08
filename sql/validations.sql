@@ -43,8 +43,8 @@ values
 
 -- DISCIPLINA
 (2,'codigo','Código','([a-zA-Z0-9]{10})','Requiere un número de 10 dígitos',1,getdate(),1,1,1),
-(2,'nombre','Nombre','.*([a-zA-Z0-9]){2}$','Requiere un texto o números, mínimo 2 caracteres',0,getdate(),1,1,2)
-
+(2,'nombre','Nombre','.*([a-zA-Z0-9]){2}$','Requiere un texto o números, mínimo 2 caracteres',0,getdate(),1,1,2),
+(2,'deporte_id','Deporte','.*([0-9])$','Requiere un número',0,getdate(),1,1,2)
 
 --SET IDENTITY_INSERT element off
 select * from element;
