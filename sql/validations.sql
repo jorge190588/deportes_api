@@ -3,6 +3,9 @@ DELETE FROM element;
 delete from entiti;
 DELETE FROM element_type;
 -- SET IDENTITY_INSERT  element_Type ON 
+DBCC CHECKIDENT ('element', RESEED, 0)
+DBCC CHECKIDENT ('entiti', RESEED, 0)
+DBCC CHECKIDENT ('element_type', RESEED, 0)
 
 INSERT [dbo].[element_Type] ( [name], [created_at], [updated_at],[version]) VALUES (N'input', GETDATE(), NULL,1),
 (N'hidden', GETDATE(), NULL,1),

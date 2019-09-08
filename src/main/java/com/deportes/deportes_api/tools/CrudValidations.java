@@ -40,16 +40,17 @@ public class CrudValidations<T>   {
 		GenericClass genericClass;
 		try {
 			validations.checkIfParamIsNull(updateElement,moduleName);
-			
+			/*
 			Set<ConstraintViolation<Object>> errors = validator.validate(updateElement);
 		    if (errors != null && errors.size() != 0) {
 		    	CustomException ex = new CustomException("Error en las validaciones", ErrorCode.REST_CREATE, this.getClass().getSimpleName(), 0, errors);
 		    	ErrorFormat _errorFormat = new ErrorFormat(ex);
 				response.setError(_errorFormat.get_errorResponse());
 				return response;
-		    }
-			    
+		    }*/
+			  
 			validations.setUpdatedAtInElement(updateElement);
+			validations.validations(updateElement, this);
 			
 			// check list
 			genericClass= new GenericClass(updateElement,"getId");
@@ -74,10 +75,16 @@ public class CrudValidations<T>   {
 
 			response.setData(genericClass.getResult());
 						
-		}catch(Throwable exception ){
-			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_UPDATE,this.getClass().getSimpleName());
+		}catch(CustomException exception){
+			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_UPDATE,this.getClass().getSimpleName(),exception.getMessageList());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
+			response = new RestResponse();
 			response.setError(_errorFormat.get_errorResponse());
+		}catch(Throwable exception ) {
+			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_UPDATE,this.getClass().getSimpleName());
+			ErrorFormat errorFormat = new ErrorFormat(ex);
+			response = new RestResponse();
+			response.setError(errorFormat.get_errorResponse());
 		}
 		return response;
 	}
@@ -173,25 +180,6 @@ public class CrudValidations<T>   {
 		try{
 			if (!searchCriteria.isEmpty())	searchCriteriaArray = new JSONArray(searchCriteria.get());
 			if (!orderCriteria.isEmpty())	orderCriteriaArray = new JSONArray(orderCriteria.get());
-			genericClass = new GenericClass(model,"findAll",jpacustomSpecification.getSpecification(searchCriteriaArray,orderCriteriaArray ));
-			genericClass.executeMethod();
-			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
-			response.setData(genericClass.getResult());
-		}catch(Throwable exception){
-			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_FIND,this.getClass().getSimpleName());
-			ErrorFormat _errorFormat = new ErrorFormat(ex);
-			response.setError(_errorFormat.get_errorResponse());
-		} 
-		return response;
-	}
-	
-	public RestResponse findAllE(java.util.Optional searchCriteria, java.util.Optional orderCriteria) {
-		RestResponse response = new RestResponse();
-		GenericClass genericClass;
-		JSONArray searchCriteriaArray=null, orderCriteriaArray=null;
-		try{
-			if (!searchCriteria.isEmpty())	searchCriteriaArray = new JSONArray(searchCriteria.get().toString());
-			if (!orderCriteria.isEmpty())	orderCriteriaArray = new JSONArray(orderCriteria.get().toString());
 			genericClass = new GenericClass(model,"findAll",jpacustomSpecification.getSpecification(searchCriteriaArray,orderCriteriaArray ));
 			genericClass.executeMethod();
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
