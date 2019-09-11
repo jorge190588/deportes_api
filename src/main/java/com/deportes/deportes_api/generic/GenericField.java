@@ -1,5 +1,6 @@
 package com.deportes.deportes_api.generic;
-import java.lang.reflect.Field;
+
+import org.apache.log4j.Logger;
 
 public class GenericField<T> {
 	private Boolean isError=false;
@@ -7,6 +8,8 @@ public class GenericField<T> {
 	private Object genericClass;
 	private String attribute;
 	private Object value;
+	Logger logger = Logger.getLogger(this.getClass());
+
 	
 	public GenericField(Object _genericClass){
 		this.setGenericClass(_genericClass);
@@ -54,6 +57,7 @@ public class GenericField<T> {
 		     field.setAccessible(true);
 		     this.value= field.get(this.genericClass);
 		}catch(Exception exception){
+			logger.error(exception.getMessage());
 			this.value=null;
 			this.setIsError(true);
 			this.setErrorMessage("Error to set "+this.attribute+" attribute");

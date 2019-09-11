@@ -2,11 +2,9 @@ package com.deportes.deportes_api.tools;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
+// import javax.validation.Validation;
+// import javax.validation.ValidatorFactory;
+import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,15 +20,14 @@ public class CrudValidations<T>   {
 	private String moduleName;
 	private GenericClass genericClass;
 	private JPAcustomSpecification jpacustomSpecification = new JPAcustomSpecification();
-	private ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-	private javax.validation.Validator validator =  factory.getValidator();
-    private Object elementRepository;
+	// private ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+	// private javax.validation.Validator validator =  factory.getValidator();
     private GenericValidations validations;
+    Logger logger = Logger.getLogger(this.getClass());
     
 	public CrudValidations(Object _model,String _moduleName, Object _elementRepository){
 		this.model=_model;
 		this.moduleName=_moduleName;
-		this.elementRepository=_elementRepository;
 		this.validations = new GenericValidations(moduleName, _elementRepository);
 	}
 	
@@ -76,11 +73,13 @@ public class CrudValidations<T>   {
 			response.setData(genericClass.getResult());
 						
 		}catch(CustomException exception){
+			logger.error(exception.getMessage());
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_UPDATE,this.getClass().getSimpleName(),exception.getMessageList());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
 			response = new RestResponse();
 			response.setError(_errorFormat.get_errorResponse());
 		}catch(Throwable exception ) {
+			logger.error(exception.getMessage());
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_UPDATE,this.getClass().getSimpleName());
 			ErrorFormat errorFormat = new ErrorFormat(ex);
 			response = new RestResponse();
@@ -113,11 +112,13 @@ public class CrudValidations<T>   {
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
 			response.setData(genericClass.getResult());
 		}catch(CustomException exception){
+			logger.error(exception.getMessage());
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_CREATE,this.getClass().getSimpleName(),exception.getMessageList());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
 			response = new RestResponse();
 			response.setError(_errorFormat.get_errorResponse());
 		}catch(Throwable exception ) {
+			logger.error(exception.getMessage());
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_CREATE,this.getClass().getSimpleName());
 			ErrorFormat errorFormat = new ErrorFormat(ex);
 			response = new RestResponse();
@@ -145,6 +146,7 @@ public class CrudValidations<T>   {
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
 			response.setData(genericClass.getResult());
 		}catch(Throwable exception){
+			logger.error(exception.getMessage());
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_DELETE,this.getClass().getSimpleName());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
 			response.setError(_errorFormat.get_errorResponse());
@@ -158,7 +160,6 @@ public class CrudValidations<T>   {
 		GenericClass genericClass;
 		try{
 		 
-		
 			validations.checkIfParamIsNull(id,moduleName);
 			
 			genericClass = new GenericClass(model,"findById",id);
@@ -166,6 +167,7 @@ public class CrudValidations<T>   {
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
 			response.setData(genericClass.getResult());
 		}catch(Throwable exception){
+			logger.error(exception.getMessage());
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_FIND,this.getClass().getSimpleName());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
 			response.setError(_errorFormat.get_errorResponse());
@@ -185,6 +187,7 @@ public class CrudValidations<T>   {
 			if (genericClass.getIsError()==true) throw new Exception(genericClass.getErrorMessage());			
 			response.setData(genericClass.getResult());
 		}catch(Throwable exception){
+			logger.error(exception.getMessage());
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_FIND,this.getClass().getSimpleName());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
 			response.setError(_errorFormat.get_errorResponse());
@@ -207,6 +210,7 @@ public class CrudValidations<T>   {
 		    page.getTotalPages();   
 			response.setData(page);
 		}catch(Throwable exception){
+			logger.error(exception.getMessage());
 			CustomException ex=  new CustomException(exception.getMessage(),exception,ErrorCode.REST_FIND,this.getClass().getSimpleName());
 			ErrorFormat _errorFormat = new ErrorFormat(ex);
 			response.setError(_errorFormat.get_errorResponse());

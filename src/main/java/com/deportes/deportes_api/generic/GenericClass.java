@@ -2,6 +2,8 @@ package com.deportes.deportes_api.generic;
 import java.lang.reflect.Method;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GenericClass<T> {
 	private Boolean isError=false;
@@ -10,6 +12,7 @@ public class GenericClass<T> {
 	private Object genericClass;
 	private String methodName;
 	private T param;
+	Logger logger = Logger.getLogger(this.getClass());
 	
 	public GenericClass(Object _genericClass,String _methodName, T _param){
 		this.genericClass=_genericClass;
@@ -48,8 +51,8 @@ public class GenericClass<T> {
 			}
 			this.setResult(result);
 		}catch(Exception exception){
+			logger.error(exception.getMessage());
 			this.setIsError(true);
-			System.out.println(exception.getCause().getMessage());
 			this.setErrorMessage(exception.getCause().getMessage());
 		}
 	}

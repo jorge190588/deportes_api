@@ -2,6 +2,8 @@ package com.deportes.deportes_api.generic;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,13 +16,13 @@ public class GenericMethod<T> {
 	private T param;
 	private String name;
 	private Object genericClass;
-	
+	Logger logger = Logger.getLogger(this.getClass());
+
 	public GenericMethod(Object _class, String _name){
 		this.genericClass=_class;
 		this.name=_name;
 	}
 	
-	 
 	public Method getMethod() {
 		return this.method;
 	}
@@ -56,6 +58,7 @@ public class GenericMethod<T> {
 				}
 			}
 		}catch(Exception exception){
+			logger.error(exception.getMessage());
 			this.method = null;
 			this.setIsError(true);
 			this.setErrorMessage("Error to execute method "+this.name+" in class "+this.genericClass.getClass().getName()+" with param "+this.param);

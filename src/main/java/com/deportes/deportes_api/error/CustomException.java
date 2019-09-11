@@ -4,10 +4,8 @@
 package com.deportes.deportes_api.error;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-
 import javax.validation.ConstraintViolation;
 
 /**

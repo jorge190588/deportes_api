@@ -1,22 +1,15 @@
 package com.deportes.deportes_api.generic;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.apache.commons.beanutils.PropertyUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.deportes.deportes_api.error.CustomException;
 import com.deportes.deportes_api.error.ErrorCode;
 import com.deportes.deportes_api.error.ErrorMessage;
-import com.deportes.deportes_api.repositorios.ElementRepositorio;
-import com.deportes.deportes_api.tablas.Entiti;
 import com.deportes.deportes_api.tablas.Element;
 import com.deportes.deportes_api.tools.CrudValidations;
 import com.deportes.deportes_api.tools.DateTools;
@@ -25,8 +18,6 @@ import com.deportes.deportes_api.tools.RestResponse;
 @SuppressWarnings({"rawtypes","unchecked"})
 public class GenericValidations<T> {
 	private String moduleName;
-	private Boolean isError=false;
-	private String errorMessage;
 	private DateTools dateTools = new DateTools();
 	private Object elementRepository;
 	private CrudValidations elementCrud = null;
